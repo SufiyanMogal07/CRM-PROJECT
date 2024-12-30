@@ -1,0 +1,8 @@
+
+.employee-container {
+    overflow-y: hidden;
+}
+
+.main-body::-webkit-scrollbar {
+    display: none;
+}

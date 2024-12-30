@@ -1,0 +1,40 @@
+/* Dashboard Widgets */
+
+.dashboard-widgets {
+    flex-wrap: nowrap;
+    gap: 5px;
+    overflow-x: auto;
+}
+.dashboard-widgets::-webkit-scrollbar {
+   display: none;
+}
+.dashboard-widget {
+    min-width: 380px;
+    cursor: pointer;
+    display: flex;
+    min-height: 220px;
+    justify-content: space-between;
+    align-items: center;
+}
+.dashboard-widget i {
+    font-size: 6.5rem;
+}
+.dashboard-widget p {
+    font-size: 1.3rem;
+}
+
+@media screen and (max-width: 550px) {
+    .dashboard-widgets {
+        align-items: center !important;
+    }
+    .dashboard-widget {
+        min-width: 320px;
+        gap: 20px;
+    }
+    .dashboard-widget i {
+        font-size: 5.5rem;
+    }
+    .dashboard-widget p {
+        font-size: 1.2rem;
+    }
+}

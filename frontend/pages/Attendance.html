@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRM Dashboard | Employee Page</title>
+  <link rel="shortcut icon" href="../assets/images/CRM_logo.png" type="image/x-icon">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" type="text/css"
+    href="https://cdn.datatables.net/responsive/2.2.7/css/responsive.dataTables.min.css">
+  <link rel="stylesheet" href="../assets/css/Dashboard.css">
+</head>
+
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.2.7/js/dataTables.responsive.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://kit.fontawesome.com/8a04af7d53.js"></script>
+
+  <div class="wrapper">
+    <!-- Top NavBar -->
+    <div class="nav-bar bg-dark d-flex justify-content-between align-items-center p-4 fixed-top">
+      <div class="d-flex align-items-center gap-4">
+        <div class="navbar-grid" id="grid-icon">
+          <div class="navbar-line"></div>
+          <div class="navbar-line"></div>
+          <div class="navbar-line"></div>
+        </div>
+        <div class="heading-logo fw-bolder fs-5 text-white ">
+          CRM<span class="text-primary">DASHBOARD</span>
+        </div>
+      </div>
+      <div class="d-flex align-items-center gap-4">
+        <div class="position-relative">
+          <input class="form-control me-2 flex-shrink-0" type="search" aria-label="Search" id="searchBar">
+          <i class="fa-solid fa-magnifying-glass" style="color: black;" id="search"></i>
+        </div>
+        <div>
+          <i class="fa-solid fa-bell fs-5" style="color: #fff;"></i>
+        </div>
+        <div class="dropdown">
+          <div class="nav-profile d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="../assets/images/img_avatar.png" alt="Profile Picture" height="40" class="rounded-circle">
+            <span id="profile-name" class="text-white ms-2">Sufiyan Mogal</span>
+          </div>
+          <ul class="m-2 dropdown-menu dropdown-menu-end" aria-labelledby="profile-info">
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="#" id="logout">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- Side NavBar -->
+    <div class="d-flex">
+      <aside id="side-nav" class="side-bar d-flex flex-column">
+        <ul class="p-3" id="side-nav-content">
+          <a href="./CRMDashboard.html" class="text-white d-flex align-items-center nav-link">
+            <i class="fa fa-home nav-icons"></i>
+            <span class="text">Dashboard</span>
+          </a>
+          <a href="./Employee.html" class="text-white d-flex no-whitespace align-items-center nav-link">
+            <i class="fa fa-user-tie nav-icons"></i>
+            <span class="text">Employees</span>
+          </a>
+          <a href="./Attendance.html" class="text-white d-flex no-whitespace align-items-center nav-link admin-section">
+            <i class="fa fa-calendar-check nav-icons"></i>
+            <span class="text">Attendance</span>
+          </a>
+          <a href="./User.html" class="text-white d-flex no-whitespace align-items-center nav-link">
+            <i class="fa fa-user nav-icons"></i>
+            <span class="text">Users</span>
+          </a>
+          <a href="./Campaigns.html" class="text-white d-flex no-whitespace align-items-center nav-link">
+            <i class="fa fa-bullhorn nav-icons"></i>
+            <span class="text">Campaigns</span>
+          </a>
+          <a href="./Tasks.html" class="text-white d-flex no-whitespace align-items-center nav-link">
+            <i class="fa fa-tasks nav-icons"></i>
+            <span class="text">Tasks</span>
+          </a>
+          <a href="./Calls.html" class="text-white d-flex no-whitespace align-items-center nav-link admin-section">
+            <i class="fa fa-phone nav-icons"></i>
+            <span class="text">Calls</span>
+          </a>
+        </ul>
+      </aside>
+      <main class="main-body p-5 d-flex flex-column">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+          <h2 class="">Mark Attendance</h2>
+          <div>
+            <button id="reset" class="btn btn-danger">Reset</button>
+            <button id="addEmployee" class="ms-2 btn btn-primary" data-bs-toggle="modal"
+              data-bs-target="#markAttendanceInput">Add Attendance</button>
+          </div>
+        </div>
+        <div class="attendance-container">
+          <table id="AttendanceTable" class="table table-striped w-100">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="modal fade" id="markAttendanceInput" tabindex="-1" aria-labelledby="inputModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="inputModalLabel">Mark Employee Attendance</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form id="userForm1">
+                  <div class="mb-3">
+                    <label for="employeeName1" class="form-label">Employee Name</label>
+                    <select class="form-control" id="employeeName1" name="EmployeeName">
+                      <option selected>None</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label for="employeeDate1" class="form-label">Select a Date</label>
+                    <input class="form-control" type="date" name="employeeDate" id="employeeDate1">
+                  </div>
+                  <div class="mb-3">
+                    <label for="employeeStatus1" class="form-label">Status</label>
+                    <select class="form-control" id="employeeStatus1">
+                      <option>None</option>
+                      <option value="present">Present</option>
+                      <option value="absent">Absent</option>
+                      <option value="leave">Leave</option>
+                    </select>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button id="close" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="addAttendanceBTN" type="button" class="btn btn-primary">Add</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="editAttendanceInput" tabindex="-1" aria-labelledby="inputModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="inputModalLabel">Update Employee Attendance</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form id="userForm1">
+                  <div class="mb-3">
+                    <label for="employeeName2" class="form-label">Employee Name</label>
+                    <select class="form-control" id="employeeName2" name="EmployeeName">
+                      <option selected>None</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label for="employeeDate2" class="form-label">Select a Date</label>
+                    <input class="form-control" type="date" name="employeeDate" id="employeeDate2">
+                  </div>
+                  <div class="mb-3">
+                    <label for="employeeStatus2" class="form-label">Status</label>
+                    <select class="form-control" id="employeeStatus2">
+                      <option>None</option>
+                      <option value="present">Present</option>
+                      <option value="absent">Absent</option>
+                      <option value="leave">Leave</option>
+                    </select>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button id="close" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="saveChangesBTN" type="button" class="btn btn-primary">Save Changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+  </div>
+  <script type="module" src="../assets/js/verifyToken.js"></script>
+  <script type="module" src="../assets/js/dashboard.js"></script>
+  <script type="module" src="../assets/js/attendance.js"></script>
+</body>
+
+</html>
