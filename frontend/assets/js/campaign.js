@@ -1,10 +1,11 @@
+import { API_URL } from "../../config.js";
 $(document).ready(function () {
     const authToken = localStorage.getItem("authToken");
     const decodedToken = jwt_decode(authToken);
-    // User Table Load
+    // Campaign Table Load
     const table = $("#CampaignTable").DataTable({
       ajax: {
-        url: "http://localhost/CRM%20PROJECT/backend/api/admin/getAllCampaign.php",
+        url: `${API_URL}api/admin/getAllCampaign.php`,
         type: "GET",
         headers: {
           Authorization: `Bearer ${authToken}`,
@@ -12,7 +13,7 @@ $(document).ready(function () {
         },
         dataSrc: function (json) {
           if(!json.data) {
-            console.log("empty")
+            console.log("Data is Empty")
           }
           return json.data || [];
         },
@@ -23,21 +24,28 @@ $(document).ready(function () {
         },
       },
       columns: [
-        { data: "id" },
+        { 
+          data: null,
+          title: "id",
+          render: function (data,type,row,meta) {
+            return meta.row + 1;
+          }
+        },
         { data: "campaign_name" },
         { data: "description" },
-        // {
-        //   data: null,
-        //   render: function (data, type, row) {
-        //     if(decodedToken.data.role==="admin") {
-        //       return `<button id="editCampaign" data-id="${row.id}" class="edit-btn btn btn-success btn-sm admin-section" data-bs-toggle="modal" data-bs-target="#editCampaignInput"><i class="fa-solid fa-pen-to-square"></i></button>
-        //       <button id="deleteCampaign" data-id="${row.id}" class="delete-btn btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button>`;
-        //     }
-        //     else {
-        //       return `<span class="text-muted">No Actions Availble</span>`
-        //     }
-        //   },
-        // },
+        {
+          data: null,
+          title: "Actions",
+          render: function (data, type, row) {
+            if(decodedToken.data.role==="admin") {
+              return `<button id="editCampaign" data-id="${row.id}" class="edit-btn btn btn-success btn-sm admin-section" data-bs-toggle="modal" data-bs-target="#editCampaignInput"><i class="fa-solid fa-pen-to-square"></i></button>
+              <button id="deleteCampaign" data-id="${row.id}" class="delete-btn btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button>`;
+            }
+            else {
+              return `<span class="text-muted">No Actions Availble</span>`
+            }
+          },
+        },
       ],
       searching: true,
       responsive: true,
@@ -46,13 +54,14 @@ $(document).ready(function () {
       $(`#CampaignName${n}`).val("");
       $(`#CampaignDescription${n}`).val("");
     }
+
     // Add Campaign
     function addCampaign(name,CampaignDescription) {
       const data = {
         name,
         CampaignDescription
       };
-      fetch("http://localhost/CRM%20PROJECT/backend/api/admin/addCampaign.php",{
+      fetch(`${API_URL}api/admin/addCampaign.php`,{
         method: "POST",
         headers: {
           'Authorization': `Bearer ${authToken}`,
@@ -89,7 +98,18 @@ $(document).ready(function () {
       }
     });
 
-     // Reload Table
+
+    // Edit Campaign 
+    function editCampaign() {
+
+    }
+    $("#CampaignTable").on("click","#edit",function () {
+
+    })
+
+    // Delete Campaign
+    
+    // Reload Table
   $("#reset").click(function () {
     table.ajax.reload(null, false);
   });

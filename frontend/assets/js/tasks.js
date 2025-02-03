@@ -1,9 +1,11 @@
+import { API_URL } from "../../config.js";
+
 $("document").ready(function () {
   // ADD TASK
   const authToken = localStorage.getItem("authToken");
   const table = $("#taskTable").DataTable({
     ajax: {
-      url: "http://localhost/CRM%20PROJECT/backend/api/admin/getAllTask.php",
+      url: `${API_URL}/api/admin/getAllTask.php`,
       type: "GET",
       headers: {
         Authorization: `Bearer ${authToken}`,
@@ -75,17 +77,17 @@ $("document").ready(function () {
     });
   }
   populateOptions(
-    "http://localhost/CRM%20PROJECT/backend/api/admin/getAllCampaign.php",
+    `${API_URL}/api/admin/getAllCampaign.php`,
     "campaignName1",
     "campaign_name"
   );
   populateOptions(
-    "http://localhost/CRM%20PROJECT/backend/api/admin/getAllEmployee.php",
+    `${API_URL}/api/admin/getAllEmployee.php`,
     "employeeName1",
     "name"
   );
   populateOptions(
-    "http://localhost/CRM%20PROJECT/backend/api/shared/getAllUsers.php",
+    `${API_URL}/api/shared/getAllUsers.php`,
     "userName1",
     "name"
   );
@@ -94,7 +96,7 @@ $("document").ready(function () {
   async function addTask(data) {
     console.log(data);
     try{
-        let respone = await fetch("http://localhost/CRM%20PROJECT/backend/api/admin/addTask.php",{
+        let respone = await fetch(`${API_URL}/api/admin/addTask.php`,{
             method: "POST",
             headers: {
                 Authorization: `Bearer ${authToken}`,

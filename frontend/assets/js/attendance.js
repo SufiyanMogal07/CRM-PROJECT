@@ -1,9 +1,10 @@
+import { API_URL } from "../../config.js";
 $(document).ready(function () {
   const authToken = localStorage.getItem("authToken");
   const decodedToken = jwt_decode(authToken);
   const table = $("#AttendanceTable").DataTable({
     ajax: {
-      url: "http://localhost/CRM%20PROJECT/backend/api/admin/getAllAttendance.php",
+      url: `${API_URL}api/admin/getAllAttendance.php`,
       type: "GET",
       headers: {
         Authorization: `Bearer ${authToken}`,
@@ -68,7 +69,7 @@ $(document).ready(function () {
   async function fetchEmployee() {
     try {
       let employees = await fetch(
-        "http://localhost/CRM%20PROJECT/backend/api/admin/getAllEmployee.php",
+        `${API_URL}api/admin/getAllEmployee.php`,
         {
           method: "GET",
           headers: {
@@ -106,7 +107,7 @@ $(document).ready(function () {
     console.log(datas);
     try {
       let response = await fetch(
-        "http://localhost/CRM%20PROJECT/backend/api/admin/addAttendance.php",
+        `${API_URL}api/admin/addAttendance.php`,
         {
           method: "POST",
           headers: {
@@ -160,7 +161,7 @@ $(document).ready(function () {
     }
 
     let response = await fetch(
-      "http://localhost/CRM%20PROJECT/backend/api/admin/updateAttendance.php",
+      `${API_URL}api/admin/updateAttendance.php`,
       {
         method: "PATCH",
         headers: {
@@ -234,7 +235,7 @@ $(document).ready(function () {
   $("#AttendanceTable").on("click", "#deleteAtt", async function () {
     let id = $(this).attr("data-id");
     let response = await fetch(
-      `http://localhost/CRM%20PROJECT/backend/api/admin/deleteAttendance.php/?id=${id}`,
+      `${API_URL}api/admin/deleteAttendance.php/?id=${id}`,
       {
         method: "DELETE",
         headers: {

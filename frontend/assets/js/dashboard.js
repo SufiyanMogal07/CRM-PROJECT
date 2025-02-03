@@ -1,3 +1,4 @@
+import { BASE_URL } from "../../config.js";
 const grid = document.querySelector("#grid-icon");
 const sideNav = document.querySelector("#side-nav");
 const currentLocation = window.location.href;
@@ -22,7 +23,7 @@ document.querySelector("#logout").addEventListener("click", () => {
   }).then((result) => {
     if (result.isConfirmed) {
       localStorage.removeItem("authToken");
-      window.location.replace("http://127.0.0.1:3000/frontend/index.html");
+      window.location.replace(`${BASE_URL}/index.php`);
     }
   });
 });

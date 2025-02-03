@@ -1,18 +1,23 @@
+import { BASE_URL,API_URL } from "../../config.js";
+
+
+console.log(BASE_URL,API_URL);
+
 window.onload = function () {
   if(!localStorage.getItem("authToken")) {
-    window.location.replace ("http://127.0.0.1:3000/frontend/index.html");
+    window.location.replace (`${BASE_URL}`);
     return;
   }
-
 }
+
 const wrapper = document.querySelector(".wrapper");
 const adminSection = document.querySelectorAll(".admin-section");
 const employeeSection = document.querySelectorAll(".employee-section");
 
 const token = localStorage.getItem("authToken");
 const urls = {
-  login: "http://127.0.0.1:3000/frontend/index.html",
-  crm: "http://127.0.0.1:3000/frontend/pages/CRMDashboard.html",
+  login: `${BASE_URL}index.php`,
+  crm: `${BASE_URL}pages/CRMDashboard.php`,
 };
 
 

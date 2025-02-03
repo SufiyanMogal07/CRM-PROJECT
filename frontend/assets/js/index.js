@@ -1,7 +1,10 @@
+import { BASE_URL,API_URL } from "../../config.js";
+
+
 if (localStorage.getItem("authToken")) {
-  window.location.href =
-    "http://127.0.0.1:3000/frontend/pages/CRMDashboard.html";
+  window.location.href = `${BASE_URL}pages/CRMDashboard.php`;
 }
+
 const email = document.querySelector("#emailInput");
 const pass = document.querySelector("#pass");
 const submit = document.querySelector("#submit-btn");
@@ -38,7 +41,7 @@ submit.addEventListener("click", (e) => {
         email: emailValue,
         password: passValue,
       };
-      fetch("http://localhost/CRM%20PROJECT/backend/auth/login.php", {
+      fetch(`${API_URL}auth/login.php`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -55,7 +58,7 @@ submit.addEventListener("click", (e) => {
           if (data.success) {
             localStorage.setItem("authToken", data.token);
             window.location.href =
-              "http://127.0.0.1:3000/frontend/pages/CRMDashboard.html";
+              `${BASE_URL}pages/CRMDashboard.php`;
           } else {
             Swal.fire({
               title: data.message,
@@ -83,4 +86,4 @@ submit.addEventListener("click", (e) => {
   }
 });
 
-export default {validateEmail};
+export default validateEmail;

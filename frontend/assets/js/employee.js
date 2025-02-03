@@ -1,9 +1,10 @@
+import {API_URL} from '../../config.js'
 $(document).ready(function () {
   const authToken = localStorage.getItem("authToken");
   // Employee Table Load
   const table = $("#EmployeeTable").DataTable({
     ajax: {
-      url: "http://localhost/CRM%20PROJECT/backend/api/admin/getAllEmployee.php",
+      url: `${API_URL}api/admin/getAllEmployee.php`,
       type: "GET",
       headers: {
         Authorization: `Bearer ${authToken}`,
@@ -17,7 +18,7 @@ $(document).ready(function () {
       },
       error: function (xhr, error, thrown) {
         $("#EmployeeTable").html(
-          `<tr><td colspan="8" class="text-center text-danger fs-5">Server error Please try again later.</td></tr>`
+          `<tr><td colspan="8" class="text-center text-danger fs-5">Server error or no response from server. Please try again later.</td></tr>`
         );
       },
     },
@@ -64,7 +65,7 @@ $(document).ready(function () {
       phone: phone,
       password: pass,
     };
-    fetch("http://localhost/CRM%20PROJECT/backend/api/admin/addEmployee.php", {
+    fetch(`${API_URL}api/admin/addEmployee.php`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${authToken}`,
@@ -132,7 +133,7 @@ $(document).ready(function () {
   function updateEmployee({ ...data }) {
     console.log(data);
     fetch(
-      "http://localhost/CRM%20PROJECT/backend/api/admin/updateEmployee.php",
+      `${API_URL}api/admin/updateEmployee.php`,
       {
         method: "PATCH",
         headers: {
@@ -215,7 +216,7 @@ $(document).ready(function () {
       return;
     }
     fetch(
-      `http://localhost/CRM%20PROJECT/backend/api/admin/deleteEmployee.php/?id=${id}`,
+      `${API_URL}api/admin/deleteEmployee.php/?id=${id}`,
       {
         method: "DELETE",
         headers: {

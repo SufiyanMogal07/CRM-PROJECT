@@ -1,10 +1,11 @@
+import { API_URL } from "../../config.js";
 $(document).ready(function () {
   const authToken = localStorage.getItem("authToken");
   const decodedToken = jwt_decode(authToken);
   // User Table Load
   const table = $("#UserTable").DataTable({
     ajax: {
-      url: "http://localhost/CRM%20PROJECT/backend/api/shared/getAllUsers.php",
+      url: `${API_URL}api/shared/getAllUsers.php`,
       type: "GET",
       headers: {
         Authorization: `Bearer ${authToken}`,
@@ -70,7 +71,7 @@ $(document).ready(function () {
       city,
       passport,
     };
-    fetch("http://localhost/CRM%20PROJECT/backend/api/admin/addUsers.php",{
+    fetch(`${API_URL}api/admin/addUsers.php`,{
       method: "POST",
       headers: {
         'Authorization': `Bearer ${authToken}`,
@@ -134,7 +135,7 @@ $(document).ready(function () {
   function updateUser({ ...data }) {
     console.log(data);
     fetch(
-      "http://localhost/CRM%20PROJECT/backend/api/admin/updateUser.php",
+      `${API_URL}api/admin/updateUser.php`,
       {
         method: "PATCH",
         headers: {
@@ -221,7 +222,7 @@ $(document).ready(function () {
       console.error("Id is not passed");
       return;
     }
-    fetch(`http://localhost/CRM%20PROJECT/backend/api/admin/deleteUser.php/?id=${id}`,
+    fetch(`${API_URL}api/admin/deleteUser.php/?id=${id}`,
       {
         method: "DELETE",
         headers: {
