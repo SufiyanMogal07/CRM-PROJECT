@@ -39,9 +39,9 @@ if (isset($header['Authorization'])) {
         $decodedToken = JWT::decode($token, new Key($secretKey, 'HS256'));
 
         $role = $decodedToken->data->role;
-        if ($role !== "admin") {
+        if ($role !== "admin" && $role !== "employee") {
             http_response_code(405);
-            echo json_encode(["success" => false, "message" => "Not Allowed!!"]);
+            echo json_encode(["success" => false, "message" => "Unauthorized Access!!"]);
             exit();
         }
         $sql = "SELECT * FROM campaign";
@@ -56,7 +56,7 @@ if (isset($header['Authorization'])) {
             
             echo json_encode(["success"=>true,"data"=>$data]);
         }else {
-            echo json_encode(["success"=>false,"message"=>"Empty Table"]);
+            echo json_encode(["success"=>false,"data"=>[],"message"=>"Empty Table"]);
         }
     } catch (Exception $e) {
         http_response_code(401); // Unauthorized

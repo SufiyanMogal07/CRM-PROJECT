@@ -11,28 +11,31 @@
 </head>
 
 <body>
-  <div class="container-fluid text-white d-flex justify-content-center align-items-center p-0">
+  <div class="container-fluid text-white d-flex justify-content-center align-items-center">
+    <div class="login-box bg-white h-auto w-auto">
+      <form id="form" method="post" class="row flex-column justify-content-center">
+        <h2 class="mb-3 text-center fs-2 heading">Welcome, Back Again</h2>
+        <h3 class="text-center fs-5">Please Login In to Access Dashboard</h3>
 
-    <div class="login-box bg-white h-40 rounded-xl">
-      <form id="form" method="post" class="d-flex flex-column justify-content-center">
-        <h2 class="mb-5 text-center heading text-uppercase">Sign In Page</h2>
-        <div class="d-flex flex-column text-black mb-2 mt-2">
-          <label class="form-label mb-1 fs-5 fw-semibold mb-3" for="emailInput">Enter Your Email</label>
-          <div class="input-box">
-            <i class="fa-solid fa-envelope"></i>
-            <input class="form-control mb-2 input-text border-red" type="email" placeholder="Email" id="emailInput"
-              required>
-          </div>
-
-        </div>
-        <div class="d-flex flex-column text-black mb-2">
-          <label class="form-label mb-1 fs-5 fw-semibold mb-3" for="pass">Enter Your Password</label>
-          <div class="input-box">
-            <i class="fa-solid fa-lock"></i>
-            <input class="form-control mb-2 input-text" type="password" placeholder="Password" id="pass" required>
+        <div class="form-group pt-5">
+          <label class="form-label mb-1 fs-semibold" for="emailInput">Email</label>
+          <div class="input-box input-group mb-3">
+            <span class="input-group-text"><i class="fa-solid fa-envelope" id="email-icon" style="color: #4a4a4a;"></i></span>
+            <input class="form-control" type="email" placeholder="Enter your Email" id="emailInput"
+              required aria-label="Email">
           </div>
         </div>
-        <button id="submit-btn" class="btn btn-primary mt-5 fs-5">Submit</button>
+        <div class="form-group mt-2">
+          <label class="form-label mb-1 fs-semibold" for="pass">Password</label>
+          <div class="input-box input-group">
+              <span class="input-group-text">
+                <i class="fa-solid fa-lock" style="color: #4a4a4a;"></i>
+              </span>
+              <input class="form-control input-text" type="password" placeholder="Enter your Password" id="pass" required>
+          </div>
+        </div>
+        <a class="mt-3 text-end" href="">Forgot Password ?</a>
+        <button id="submit-btn" class="btn btn-primary mt-5 fs-5">Log In</button>
       </form>
     </div>
   </div>

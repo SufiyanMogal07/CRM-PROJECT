@@ -3,8 +3,9 @@
   $css = '';
   include("../layouts/dashboard_layout.php")
 ?>
-<main class="main-body p-5 d-flex flex-column">
-  <div class="d-flex justify-content-between align-items-center mb-5">
+<main class="main-body p-3 d-flex flex-column">
+  <div class="main-container p-5">
+  <div class="d-flex justify-content-between align-items-center mb-5 top-head">
     <h2>Manage User</h2>
     <div>
       <button id="reset" class="btn btn-danger">Reset</button>
@@ -12,8 +13,8 @@
         User</button>
     </div>
   </div>
-  <div class="user-container">
-    <table id="UserTable" class="table table-striped w-100">
+  <div class="user-container table-container">
+    <table id="UserTable" class="table table-bordered table-striped w-100">
       <thead>
         <tr>
           <th>#</th>
@@ -28,9 +29,21 @@
       </thead>
       <tbody>
       </tbody>
+      <tfoot>
+      <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Phone no</th>
+          <th>Email</th>
+          <th>Address</th>
+          <th>City</th>
+          <th>Passport no</th>
+          <th>Actions</th>
+        </tr>
+      </tfoot>
     </table>
     <div class="modal fade" id="addUserInput" tabindex="-1" aria-labelledby="inputModalLabel" aria-hidden="true">
-      <div class="modal-dialog  modal-dialog-scrollable">
+      <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="inputModalLabel">Enter User Details</h5>
@@ -115,10 +128,10 @@
         </div>
       </div>
     </div>
-
+  </div>
   </div>
 </main>
 <?php
-$script = "<script type='module' src='../assets/js/user.js'></script>";
+ $script = "<script type='module' src='../assets/js/user.js'></script>";
 include("../components/footer.php");
 ?>

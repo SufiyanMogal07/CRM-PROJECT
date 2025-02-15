@@ -1,159 +1,134 @@
-import { API_URL } from "../../config.js";
+import { initDataTable } from "./helper/DataTableHelper.js";
+import { getActionbuttons, getBootStrapModal, getElementValue, SwalPopup,deleteSwalPopup } from "./helper/uiHelper.js";
+import { addData, decodedToken, deleteData, getData, updateData } from "./helper/apiClient.js";
+import { BASE_URL } from "../../config.js";
 
-$("document").ready(function () {
-  // ADD TASK
-  const authToken = localStorage.getItem("authToken");
-  const table = $("#taskTable").DataTable({
-    ajax: {
-      url: `${API_URL}/api/admin/getAllTask.php`,
-      type: "GET",
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-        "Content-type": "application/json",
+
+let table;
+$(document).ready(function () {
+
+  let token = decodedToken(jwt_decode);
+  let role = token.data.role
+  let crm =  `${BASE_URL}pages/CRMDashboard.php`
+
+  if(role!=="admin") {
+    window.location.href = crm;
+  }
+  
+  table = initDataTable("#TaskTable","api/admin/getAllTask.php",[
+    {
+      data: null,
+      render: function (data, type, row, meta) {
+        return meta.row + 1;
       },
     },
-    dataSrc: function (json) {
-      return json.data || [];
-    },
-    error: function (xhr, error, thrown) {
-      $("#Tasktable").html(`<tr>
-                <td colspan="8" class="text-center text-danger">Server error or no response from server. Please try again later.</td>
-                </tr>`);
-    },
-    columns: [
-      {
-        data: null,
-        render: function (data, type, row, meta) {
-          return meta.row + 1;
-        },
-      },
-      { data: "campaignName" },
-      { data: "employeeName" },
-      { data: "userName" },
-      { data: "status" },
-      { data: "action" },
-
-    ],
-    responsive: true,
-    pagination: true,
-  });
-  //  GET ALL DATA
-  async function getData(url) {
-    if (url === "") {
-      return null;
-    }
-    try {
-      let data = await fetch(url, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-          "Content-type": "application/json",
-        },
-      });
-      let response = await data.json();
-      if (!response.success) {
-        throw new Error("Server is Not Responding");
+    { data: "campaignName" },
+    { data: "employeeName" },
+    { data: "userName" },
+    { data: null,
+      title: "Status",
+      render: function (data,type,row) {
+        let status = data.status;
+        let color = "";
+        if (status === "Pending") {
+          color = "danger";
+        } else if (status === "In Progress") {
+          color = "warning";
+        } else if (status === "Completed") {
+          color = "success";
+        }
+    
+        return `<span class="badge px-3 py-1 text-bg-${color}">${status.toUpperCase()}</span>`;
       }
-      return response.data;
-    } catch (error) {
-      console.log(error);
+    },
+    { data: "action" },
+    {
+      data: null,
+      title: "Actions",
+      render: function (data,type,row) {
+        let token = decodedToken(jwt_decode);
+        let role = token.data.role;
+        if(role==="admin") {
+          return getActionbuttons("editTask","editTaskInput","deleteTask",data.taskID);
+        } else {
+          return `<span class="text-muted">No Actions Availble</span>`;
+        }
+      }
     }
-  }
+  ]);
+
+  
   // POPULATE OPTIONS
-  async function populateOptions(url, id, dataName) {
-    if (!url || !id || !dataName) {
+  async function populateOptions(url, selector, dataName) {
+    if (!url || !selector || !dataName) {
       return null;
     }
-    let data = await getData(url);
-    console.log(data);
-    const select = $("#" + id);
-    select.empty();
-    select.append(`<option value="select">--Select--</>`);
+    let respone = await getData(url);
+    if(respone.success) {
+      respone = respone.data;
+      const select = $("#" + selector);
+      select.empty();
+      select.append(`<option value="none" selected>Select</>`);
 
-    data.forEach((element) => {
-      select.append(
-        `<option value="${element.id}">${element[dataName]}</option>`
-      );
-    });
+      respone.forEach((element) => {
+        select.append(
+          `<option value="${element.id}">${element[dataName]}</option>`
+        );
+      });
+    } else {
+      SwalPopup(Swal,"Something Went Wrong While Populating Data!!","error");
+    }
   }
-  populateOptions(
-    `${API_URL}/api/admin/getAllCampaign.php`,
-    "campaignName1",
-    "campaign_name"
-  );
-  populateOptions(
-    `${API_URL}/api/admin/getAllEmployee.php`,
-    "employeeName1",
-    "name"
-  );
-  populateOptions(
-    `${API_URL}/api/shared/getAllUsers.php`,
-    "userName1",
-    "name"
-  );
+  function clearForm(n = 2) {
+    $(`#campaignName${n}`).val("none");
+    $(`#employeeName${n}`).val("none");
+    $(`#userName${n}`).val("none");
+    if(n==2) {
+      $(`#status`).val("none");
+    }
+  }
+    populateOptions(
+      `/api/admin/getAllCampaign.php`,
+      "campaignName1",
+      "campaign_name",
+    );
+    populateOptions(
+      `/api/admin/getAllEmployee.php`,
+      "employeeName1",
+      "name",
+    );
+    populateOptions(
+      `/api/shared/getAllUsers.php`,
+      "userName1",
+      "name",
+    );
+
 
   // ADD TASK
   async function addTask(data) {
-    console.log(data);
-    try{
-        let respone = await fetch(`${API_URL}/api/admin/addTask.php`,{
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${authToken}`,
-                'Content-type': "application/json"
-            },
-            body: JSON.stringify(data)
-        });
-        respone = await respone.json();
-        const modal = getModal("assignTaskInput");
-        $("taskTable").ajax.reload();
-        modal.hide();
-        if(!respone.success) {
-            Swal.fire({
-                title: respone.message,
-                icon: "danger"
-            })
-        } else {
-            Swal.fire({
-                title: respone.message,
-                icon: "success"
-            })
-        }
-
-    } catch(error) {
-        console.error("Error: ",error)
-    }
-  }
-  function getValue(name) {
-    return name ? document.querySelector(name).value : null;
-  }
-
-  function getModal(modalId) {
-    if (!modalId) {
-      console.error("Modal Id is Empty");
-    }
-    try {
-      return bootstrap.Modal.getInstance(document.getElementById(modalId));
-    } catch (error) {
-      console.error(error);
-    }
-  }
-  $("#addTask").click(function () {
-    let campaign_id = getValue("#campaignName1");
-    let employee_id = getValue("#employeeName1");
-    let user_id = getValue("#userName1");
-    let status = getValue("#status1");
-    let action = getValue("#action1");
-    const modal = getModal("assignTaskInput");
-    if (!campaign_id || !employee_id || !user_id || !status || !action) {
-      modal.hide();
-      
-      Swal.fire({
-        title: "Input Field is Empty!",
-        icon: "warning",
-      });
+    let respone = await addData("/api/admin/addTask.php",data);
+    let modal = getBootStrapModal("assignTaskInput");
+    if(respone.success) {
+      SwalPopup(Swal,respone.message,"success");
     } else {
-      let text = "select";
+      SwalPopup(Swal,data.message,"error");
+    }
+    modal.hide();
+    table.ajax.reload(null,false);
+  }
+
+  $("#addTask").click(function () {
+    let campaign_id = getElementValue("campaignName1");
+    let employee_id = getElementValue("employeeName1");
+    let user_id = getElementValue("userName1");
+    let action = getElementValue("action1");
+    const modal = getBootStrapModal("assignTaskInput");
+    
+    if (!campaign_id || !employee_id || !user_id || !action) {
+      modal.hide();
+      SwalPopup(Swal,"Input Field is Empty!","warning");
+    } else {
+      let text = "none";
       if (
         campaign_id === text ||
         employee_id === text ||
@@ -161,19 +136,124 @@ $("document").ready(function () {
         action === text
       ) {
         modal.hide();
-        Swal.fire({
-          title: "Input Field is Empty!",
-          icon: "warning",
-        });
+        SwalPopup(Swal,"Input Field is Empty!","warning");
+        return 
       }
       let data = {
         campaign_id,
         employee_id,
         user_id,
-        status,
         action
       }
       addTask(data);
     }
+  });
+
+  // Edit Task
+  async function updateTask(data) {
+    if(!data) return console.warn("Data is Empty!!");
+    let respone = await updateData("api/admin/updateTask.php",data);
+    let modal = getBootStrapModal("editTaskInput");
+
+    if(respone.success) {
+      SwalPopup(Swal,respone.message,"success");
+    } else {
+      SwalPopup(Swal,respone.message,"error");
+    }
+    modal.hide();
+    table.ajax.reload();
+    clearForm();
+  }
+  $("#saveChanges").click(function() {
+    let id = $(this).attr("data-id");
+    let status = getElementValue("status");
+    let action = getElementValue("action2");
+    const modal = getBootStrapModal("editTaskInput");
+
+    if (!status|| !action ) {
+      modal.hide();
+      SwalPopup(Swal,"Input Field is Empty!","warning");
+    } else {
+      let text = "none";
+      if (status === text) {
+        modal.hide();
+        SwalPopup(Swal,"Status Not Selected","warning");
+        return 
+      }
+      let data = {
+        id,
+        status,
+        action
+      }
+      updateTask(data);
+    }
+  });
+
+  $("#TaskTable").on("click","#editTask",function () {
+    let id = $(this).attr("data-id");
+    let rowData = table.rows().data().toArray();
+    rowData = rowData.filter((item)=> item.taskID == id)[0];
+    
+    Promise.all([
+      populateOptions(`/api/admin/getAllCampaign.php`, "campaignName2", "campaign_name"),
+      populateOptions(`/api/admin/getAllEmployee.php`, "employeeName2", "name"),
+      populateOptions(`/api/shared/getAllUsers.php`, "userName2", "name")
+    ]).then(() => {
+      // Now that the options are populated, set the selected options:
+      document.querySelector(
+        `#employeeName2 option[value="${rowData.employeeId}"]`
+      ).selected = true;
+      document.querySelector(
+        `#campaignName2 option[value="${rowData.campaignId}"]`
+      ).selected = true;
+      document.querySelector(
+        `#userName2 option[value="${rowData.userId}"]`
+      ).selected = true;
+      document.querySelector("#employeeName2").disabled = true;
+      document.querySelector("#campaignName2").disabled = true;
+      document.querySelector("#userName2").disabled = true;
+    });
+
+    document.querySelector(`#status option[value="${rowData.status}`).selected = true;
+    document.querySelector("#action2").value = rowData.action;
+    $("#saveChanges").attr('data-id',id);
+  });
+
+  // Delete Task
+
+     async function deleteTask(id) {
+        if(id) {
+          let data = await deleteData(`api/admin/deleteTask.php?id=${id}`);
+          let icon = data.success ? "success": "error";
+          SwalPopup(Swal,data.message,icon);
+          table.ajax.reload(null,false);
+        } else {
+          console.error("Id is Missing!!!")
+        }
+      }
+
+  $("#TaskTable").on("click","#deleteTask",function () {
+     deleteSwalPopup(Swal).then((result) => {
+            if (result.isConfirmed) {
+              let id = $(this).attr("data-id");
+              deleteTask(id);
+            }
+          });
+  });
+
+  $("#assignTaskInput #close,#assignTaskInput .btn-close").click(
+    function () {
+      clearForm(1);
+    }
+  );
+  $("#editAttendanceInput #close,#editAttendanceInput .btn-close").click(
+    function () {
+      clearForm();
+    }
+  );
+
+  // Reload Table
+  $("#reset").click(function () {
+    table.ajax.reload(null, false);
   });
 });

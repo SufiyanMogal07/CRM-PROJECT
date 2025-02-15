@@ -3,17 +3,27 @@
   $css = '';
   include("../layouts/dashboard_layout.php")
 ?>
-<main class="main-body p-5 d-flex flex-column">
-  <div class="d-flex justify-content-between align-items-center mb-5">
-    <h2 class="">Mark Attendance</h2>
+<main class="main-body p-3 d-flex flex-column">
+  <div class="main-container p-5">
+  <div class="d-flex justify-content-between align-items-center mb-5 top-head">
+    <h2>Mark Attendance</h2>
+    <div>
+      <select class="form-select" name="filter" id="attendanceFilter">
+        <option selected disabled value="">Filter by</option>
+        <option value="all" default>All</option>
+        <option value="present">Present</option>
+        <option value="absent">Absent</option>
+        <option value="leave">Leave</option>
+      </select>
+    </div>
     <div>
       <button id="reset" class="btn btn-danger">Reset</button>
       <button id="addEmployee" class="ms-2 btn btn-primary" data-bs-toggle="modal"
         data-bs-target="#markAttendanceInput">Add Attendance</button>
     </div>
   </div>
-  <div class="attendance-container">
-    <table id="AttendanceTable" class="table table-striped w-100">
+  <div class="attendance-container table-container w-100">
+    <table id="AttendanceTable" class="table table-bordered table-striped w-100">
       <thead>
         <tr>
           <th>#</th>
@@ -28,8 +38,7 @@
     </table>
   </div>
 
-  <div class="modal fade" id="markAttendanceInput" tabindex="-1" aria-labelledby="inputModalLabel"
-    aria-hidden="true">
+  <div class="modal fade" id="markAttendanceInput" tabindex="-1" aria-labelledby="inputModalLabel">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -41,17 +50,17 @@
             <div class="mb-3">
               <label for="employeeName1" class="form-label">Employee Name</label>
               <select class="form-control" id="employeeName1" name="EmployeeName">
-                <option selected>None</option>
+                <option value="" selected>None</option>
               </select>
             </div>
             <div class="mb-3">
               <label for="employeeDate1" class="form-label">Select a Date</label>
-              <input class="form-control" type="date" name="employeeDate" id="employeeDate1">
+              <input class="form-control date-picker" type="date" name="employeeDate" id="employeeDate1">
             </div>
             <div class="mb-3">
               <label for="employeeStatus1" class="form-label">Status</label>
               <select class="form-control" id="employeeStatus1">
-                <option>None</option>
+                <option value="" selected>None</option>
                 <option value="present">Present</option>
                 <option value="absent">Absent</option>
                 <option value="leave">Leave</option>
@@ -66,8 +75,7 @@
       </div>
     </div>
   </div>
-  <div class="modal fade" id="editAttendanceInput" tabindex="-1" aria-labelledby="inputModalLabel"
-    aria-hidden="true">
+  <div class="modal fade" id="editAttendanceInput" tabindex="-1" aria-labelledby="inputModalLabel">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -84,7 +92,7 @@
             </div>
             <div class="mb-3">
               <label for="employeeDate2" class="form-label">Select a Date</label>
-              <input class="form-control" type="date" name="employeeDate" id="employeeDate2">
+              <input class="form-control date-picker" type="date" name="employeeDate" id="employeeDate2">
             </div>
             <div class="mb-3">
               <label for="employeeStatus2" class="form-label">Status</label>
@@ -104,8 +112,9 @@
       </div>
     </div>
   </div>
+  </div>
 </main>
 <?php
-$script = "<script type='module' src='../assets/js/attendance.js'></script>";
+ $script = "<script type='module' src='../assets/js/attendance.js'></script>";
 include("../components/footer.php");
 ?>

@@ -1,54 +1,47 @@
 import { API_URL } from "../../config.js";
+import { addData, authToken, decodedToken, deleteData, updateData } from "./helper/apiClient.js";
+import { initDataTable } from "./helper/DataTableHelper.js";
+import {
+  getActionbuttons,
+  getBootStrapModal,
+  SwalPopup,
+  getElementValue,
+} from "./helper/uiHelper.js";
+
+let table;
 $(document).ready(function () {
-  const authToken = localStorage.getItem("authToken");
-  const decodedToken = jwt_decode(authToken);
   // User Table Load
-  const table = $("#UserTable").DataTable({
-    ajax: {
-      url: `${API_URL}api/shared/getAllUsers.php`,
-      type: "GET",
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-        "Content-Type": "application/json",
-      },
-      dataSrc: function (json) {
-        return json.data || [];
-      },
-      error: function (xhr, error, thrown) {
-        $("#UserTable").html(
-          `<tr><td colspan="8" class="text-center text-danger">Server error or no response from server. Please try again later.</td></tr>`
-        );
+  table = initDataTable("#UserTable", "api/shared/getAllUsers.php", [
+    {
+      data: null,
+      render: function (data, type, row, meta) {
+        return meta.row + 1;
       },
     },
-    columns: [
-      { data: null,
-        render: function(data, type, row, meta) {
-            return meta.row + 1;
+    { data: "name" },
+    { data: "phone" },
+    { data: "email" },
+    { data: "address" },
+    { data: "city" },
+    { data: "passportno" },
+    {
+      data: null,
+      title: "Actions",
+      render: function (data, type, row) {
+        if (decodedToken(jwt_decode).data.role === "admin") {
+          return getActionbuttons(
+            "editUser",
+            "editUserInput",
+            "deleteUser",
+            row.id
+          );
+        } else {
+          return `<span class="text-muted">No Actions Availble</span>`;
         }
-     },
-      { data: "name" },
-      { data: "phone" },
-      { data: "email" },
-      { data: "address" },
-      { data: "city" },
-      { data: "passportno" },
-      {
-        data: null,
-        title: "Actions",
-        render: function (data, type, row) {
-          if(decodedToken.data.role==="admin") {
-            return `<button id="editUser" data-id="${row.id}" class="edit-btn btn btn-success btn-sm admin-section" data-bs-toggle="modal" data-bs-target="#editUserInput"><i class="fa-solid fa-pen-to-square"></i></button>
-            <button id="deleteUser" data-id="${row.id}" class="delete-btn btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button>`;
-          }
-          else {
-            return `<span class="text-muted">No Actions Availble</span>`
-          }
-        },
       },
-    ],
-    searching: true,
-    responsive: true,
-  });
+    },
+  ]);
+
   function validateEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -62,7 +55,7 @@ $(document).ready(function () {
     $(`#userPassport${n}`).val("");
   }
   // Add User
-  function addUser(name, phone, email, address, city, passport) {
+  async function addUser(name, phone, email, address, city, passport) {
     const data = {
       name,
       phone,
@@ -71,35 +64,16 @@ $(document).ready(function () {
       city,
       passport,
     };
-    fetch(`${API_URL}api/admin/addUsers.php`,{
-      method: "POST",
-      headers: {
-        'Authorization': `Bearer ${authToken}`,
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    }).then((response)=> {
-      return response.json();
-    }).then((data)=> {
-      const modal = bootstrap.Modal.getInstance(document.getElementById('addUserInput'));
-      if(data.success) {
-        modal.hide();
-        table.ajax.reload();
-        Swal.fire({
-          title: data.message,
-          icon: "success"
-        })
-      } else {
-        modal.hide();
-        Swal.fire({
-          title: data.message,
-          icon: "error"
-        });
-      }
-    }).catch((error)=>{
-      console.log(error)
-    })
+    let response = await addData("api/admin/addUsers.php", data);
+    let modal = getBootStrapModal("addUserInput");
+    let icon = response.success ? "success" : "error";
+    SwalPopup(Swal, response.message, icon);
+    modal.hide();
+    table.ajax.reload();
+    clearForm(1);
   }
+
+  
   $("#addUserBTN").click(function () {
     let name = document.querySelector("#userName1").value;
     let phone = document.querySelector("#userPhone1").value;
@@ -132,45 +106,16 @@ $(document).ready(function () {
     }
   });
   // Edit User
-  function updateUser({ ...data }) {
-    console.log(data);
-    fetch(
-      `${API_URL}api/admin/updateUser.php`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      }
-    )
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Server is Not Responding");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        const modal = bootstrap.Modal.getInstance(
-          document.querySelector("#editUserInput")
-        );
-        modal.hide();
-        if (data.success) {
-          Swal.fire({
-            title: data.message,
-            icon: "info",
-          });
-          table.ajax.reload();
-        } else {
-          Swal.fire({
-            title: data.message,
-            icon: "info",
-          });
-        }
-      })
-      .catch((error) => console.error(error));
+  async function updateUser({ ...data }) {
+    let response = await updateData("api/admin/updateUser.php", data);
+    let modal = getBootStrapModal("editUserInput");
+    let icon = response.success ? "success" : "error";
+    SwalPopup(Swal, response.message, icon);
+    modal.hide();
+    table.ajax.reload();
+    clearForm();
   }
+
   $("#saveChangesBTN").click(function () {
     const id = $(this).attr("data-id");
     const name = $("#userName2").val();
@@ -180,22 +125,25 @@ $(document).ready(function () {
     const city = $("#userCity2").val();
     const passportno = $("#userPassport2").val();
 
-    if (id != "" && name != "" && phone != "" && email != "" && address != "" && city!="" && passportno!="") {
+    if (
+      id != "" &&
+      name != "" &&
+      phone != "" &&
+      email != "" &&
+      address != "" &&
+      city != "" &&
+      passportno != ""
+    ) {
       if (validateEmail(email)) {
         updateUser({ id, name, phone, email, address, city, passportno });
       } else {
-        Swal.fire({
-          title: "Email is not in valid format",
-          icon: "error",
-        });
+        SwalPopup(Swal,"Email is not in valid format","error");
       }
     } else {
-      Swal.fire({
-        title: "All Input fields Required!!",
-        icon: "error",
-      });
+      SwalPopup(Swal,"All Input fields Required!!","error");
     }
   });
+
   $("#UserTable").on("click", "#editUser", function () {
     const id = $(this).attr("data-id");
     const rowData = table
@@ -214,44 +162,22 @@ $(document).ready(function () {
       $("#saveChangesBTN").attr("data-id", id);
     }
   });
-  $("#editUserInput .btn-close,#editUserInput #close").click(() =>
-    clearForm()
-  );
-  function deleteUser(id) {
+
+  $("#editUserInput .btn-close,#editUserInput #close").click(() => clearForm());
+
+  async function deleteUser(id) {
     if (!id) {
       console.error("Id is not passed");
       return;
     }
-    fetch(`${API_URL}api/admin/deleteUser.php/?id=${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          'Authorization': `Bearer ${authToken}`,
-          'Content-type': 'application/json'
-        }
-      }
-    ).then((response)=> {
-      if(!response.ok) {
-        throw new Error("Server is Not Responding");
-      }
-      return response.json();
-    }).then((data) => {
-      if (data.success) {
-        table.ajax.reload();
-        Swal.fire({
-          title: data.message,
-          icon: "success",
-        });
-      } else {
-        Swal.fire({
-          title: data.message,
-          icon: "error",
-        });
-      }
-    });
+    let response = await deleteData(`api/admin/deleteUser.php?id=${id}`);
+    let icon = response.success ? "success" : "error";
+    SwalPopup(Swal, response.message, icon);
+    table.ajax.reload();
   }
+
   // Delete User
-  $("#UserTable").on("click","#deleteUser",function () {
+  $("#UserTable").on("click", "#deleteUser", function () {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -259,17 +185,17 @@ $(document).ready(function () {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
+      confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        let id = $(this).attr('data-id');
+        let id = $(this).attr("data-id");
         deleteUser(id);
       }
     });
-  
-  })
+  });
+
   // Reload Table
   $("#reset").click(function () {
-    table.ajax.reload(null,false);
+    table.ajax.reload(null, false);
   });
 });

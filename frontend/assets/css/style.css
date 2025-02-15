@@ -4,44 +4,30 @@
 }
 .container-fluid {
     height: 100vh;
-   background-color: #008DD5;
+    margin: 0 !important;
+    background-color: #008DD5;
 }
 
 .login-box {
-    height: clamp(480px,75vh,900px);
-    width: clamp(400px,50vw,480px);
+    background-color: #fff;
     border-radius: 12px;
-    padding: 2.5rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+}
+.login-box form {
+    padding: 4rem;
 }
 
-.input-text {
-    font-size: 17px;
-    padding: 10px;
-    font-weight: 500;
-}
-
-.heading {
-    font-weight: 600;
-    color: #333;
-    font-size: 2rem;
-}
-.input-box {
-    position: relative;
-}
-.input-box input{
-    padding-left: 14%;
-}
-
-.input-box i {
-    position: absolute;
-    top: 26%;
-    left: 5%;
-    color: #333;
-}
-
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 600px) {
+    .container-fluid {
+        background: white;
+        padding: 0;
+    }
   .login-box {
-    width: 90vw;
+    background-color: black;
   }
+  .login-box form {
+    padding: 3rem;
+}
   }

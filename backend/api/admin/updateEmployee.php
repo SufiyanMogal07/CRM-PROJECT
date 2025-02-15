@@ -1,6 +1,9 @@
 <?php
 require '../../vendor/autoload.php';
 require "../../config/config.php";
+require '../../utils/authenticate.php';
+require '../../utils/helper.php';
+
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../..');
 $dotenv->load();
 
@@ -19,12 +22,12 @@ if ($_SERVER['REQUEST_METHOD'] === "OPTIONS") {
     exit();
 }
 
-
 if ($_SERVER['REQUEST_METHOD'] != "PATCH") {
     http_response_code(405); // Method Not Allowed
     echo json_encode(["success" => false, "message" => "It's not a valid request!!"]);
     exit();
 }
+
 $headers = apache_request_headers();
 
 if (!isset($headers['Authorization'])) {
@@ -32,9 +35,10 @@ if (!isset($headers['Authorization'])) {
     echo json_encode(["success" => false, "message" => "Authorization Header Missing!!"]);
     exit();
 }
+
 if(!$data) {
     http_response_code(405);
-    echo json_encode(["success"=> false, "message"=>"Data is not Sent!!"]);
+    echo json_encode(["success"=> false, "message"=>"Sent Data is Empty!!"]);
     exit();
 }
 
@@ -104,4 +108,6 @@ if (isset($headers["Authorization"])) {
         http_response_code(401); // Method Not Allowed
         echo json_encode(["success" => false, "message" => "Admin Only!!"]);
     }
+} else {
+
 }

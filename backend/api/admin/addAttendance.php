@@ -1,6 +1,7 @@
 <?php
 require '../../vendor/autoload.php';
 require "../../config/config.php";
+require "../../utils/helper.php";
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../..');
 $dotenv->load();
 
@@ -8,10 +9,10 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
 $secretKey = $_ENV['JWT_SECRET_KEY'];
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-type, Authorization");
-header("Content-Type: application/json");
+// header("Access-Control-Allow-Origin: *");
+// header("Access-Control-Allow-Methods: POST, OPTIONS");
+// header("Access-Control-Allow-Headers: Content-type, Authorization");
+// header("Content-Type: application/json");
 
 $data = json_decode(file_get_contents("php://input"),true);
 $headers = apache_request_headers();
@@ -20,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === "OPTIONS") {
     http_response_code(200);
     exit();
 }
+
 function addAttendance($conn, $data)
 {
     $stmt = $conn->prepare("SELECT * FROM attendance where employee_id = ? AND att_date = ?");
@@ -42,7 +44,7 @@ function addAttendance($conn, $data)
         }
         else {
             http_response_code(500); // Internal Server Error
-            echo json_encode(["success"=>true,"message"=>"Failed to add Attendance. Please try again later!"]);
+            echo json_encode(["success"=>false,"message"=>"Failed to add Attendance. Please try again later!"]);
         }
     }
 }
@@ -61,8 +63,11 @@ if (isset($headers['Authorization'])) {
         exit();
     }
     $employee_id = $data['employee_id'];
-    $date = $data['date'];
     $status = $data['status'];
+
+    $date = $data['date'];
+    $todayDate = new DateTime();
+    $inputDate = new DateTime($date);
 
     if (empty($employee_id) || empty($date) || empty($status)) {
         echo json_encode(["success" => false, "message" => "Data is Empty!!!"]);
@@ -71,6 +76,10 @@ if (isset($headers['Authorization'])) {
     if(!in_array($status,["present","absent","leave"])) {
         echo json_encode(["success" => false, "message" => "The Status is Invalid!!!"]);
         exit();
+    }
+    
+    if($inputDate > $todayDate) {
+        sendResponse(400,["success"=>false,"message"=> "No Future Date Allowed"]);
     }
 
     addAttendance($conn, $data);

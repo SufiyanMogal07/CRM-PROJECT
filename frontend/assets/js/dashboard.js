@@ -4,7 +4,6 @@ const sideNav = document.querySelector("#side-nav");
 const currentLocation = window.location.href;
 const navLinks = document.querySelectorAll(".nav-link");
 
-
 navLinks.forEach((links)=> {
     if(links.href.includes(currentLocation)) {
       sideNav.classList.add("expand");
@@ -32,15 +31,11 @@ grid.addEventListener("click", () => {
   sideNav.classList.toggle("expand");
 });
 
-sideNav.addEventListener("mouseenter", () => {
-  sideNav.classList.add("expand");
-});
+// sideNav.addEventListener("mouseenter", () => {
+//   sideNav.classList.add("expand");
+// });
 
 sideNav.addEventListener("mouseleave", () => {
   sideNav.classList.remove("expand");
 });
 
-function validateEmail(email) {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-}

@@ -1,4 +1,4 @@
-<div class="d-flex">
+<div class="d-flex big">
 <aside id="side-nav" class="side-bar d-flex flex-column">
         <ul class="p-3 navbar-nav" id="side-nav-content">
           <a href="./CRMDashboard.php" class="text-white d-flex align-items-center nav-link">
@@ -17,7 +17,7 @@
             <i class="fa fa-user nav-icons"></i>
             <span class="text">Users</span>
           </a>
-          <a href="./Campaigns.php" class="text-white d-flex no-whitespace align-items-center nav-link admin-section">
+          <a href="./Campaigns.php" class="text-white d-flex no-whitespace align-items-center nav-link">
             <i class="fa fa-bullhorn nav-icons"></i>
             <span class="text">Campaigns</span>
           </a>
@@ -25,9 +25,17 @@
             <i class="fa fa-tasks nav-icons"></i>
             <span class="text">Tasks</span>
           </a>
-          <!-- <a href="./Calls.php" class="text-white d-flex no-whitespace align-items-center nav-link admin-section">
+          <a href="./MyTasks.php" class="text-white d-flex no-whitespace align-items-center nav-link employee-section">
+            <i class="fa fa-tasks nav-icons"></i>
+            <span class="text">My Tasks</span>
+          </a>
+          <a href="./CallLogs.php" class="text-white d-flex no-whitespace align-items-center nav-link admin-section">
             <i class="fa fa-phone nav-icons"></i>
-            <span class="text">Calls</span>
-          </a> -->
+            <span class="text">Call Logs</span>
+          </a>
+          <a href="./CallLogs.php" class="text-white d-flex no-whitespace align-items-center nav-link employee-section">
+            <i class="fa fa-phone nav-icons"></i>
+            <span class="text">My Call Logs</span>
+          </a>
         </ul>
       </aside>

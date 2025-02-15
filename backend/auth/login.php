@@ -30,7 +30,7 @@ if (isset($data['email'], $data['password'])) {
             
             if ($password===$row['password'] || password_verify($password,$row['password'])) {
                 $issuedAt = time();
-                $expirationTime = $issuedAt + (3600 * 10);
+                $expirationTime = ($role === "admin") ? $issuedAt + (3600*10) : $issuedAt + (3600*3);
                 $payload = [
                     'iat' => $issuedAt,
                     'exp' => $expirationTime,
@@ -53,7 +53,7 @@ if (isset($data['email'], $data['password'])) {
     }
     if(!authenticateUser($conn,$email,$password,"admin","admin",$secretKey)) {
         if(!authenticateUser($conn,$email,$password,"employee","employee",$secretKey)) {
-        echo json_encode(["success"=> false,"message"=> "Email Not Found!"]);
+        echo json_encode(["success"=> false,"message"=> "$email Not Found!!!"]);
         }
     }
 

@@ -24,7 +24,6 @@ if($_SERVER['REQUEST_METHOD']!="POST") {
 
 $data = json_decode(file_get_contents("php://input"),true);
 $headers = getallheaders();
-// echo json_encode(['error' => error_get_last(), 'headers' => $headers, 'data' => $data]);
 
 if(isset($headers['Authorization'])) {
     $authHeader = $headers['Authorization'];
@@ -45,18 +44,17 @@ if(isset($headers['Authorization'])) {
     $employee_id = $data['employee_id'];
     $user_id = $data['user_id'];
     $campaign_id = $data['campaign_id'];
-    $status = $data['status'];
     $action = $data['action'];
 
-    if(empty($campaign_id) || empty($employee_id) || empty($user_id) || empty($status) || empty($action)) {
+    if(empty($campaign_id) || empty($employee_id) || empty($user_id) || empty($action)) {
         http_response_code(405);
         echo json_encode(['success'=>false,"message"=>"Sent Data is Empty!!!"]);
         exit();
     }
 
-    $sql = "INSERT INTO task (employee_id,user_id,campaign_id,status,action) VALUES(?,?,?,?,?)";
+    $sql = "INSERT INTO task (employee_id,user_id,campaign_id,action) VALUES(?,?,?,?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('iiiss',$employee_id,$user_id,$campaign_id,$status,$action);
+    $stmt->bind_param('iiis',$employee_id,$user_id,$campaign_id,$action);
 
     if($stmt->execute()) {
         http_response_code(200);

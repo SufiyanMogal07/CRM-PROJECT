@@ -1,7 +1,4 @@
-import { BASE_URL,API_URL } from "../../config.js";
-
-
-console.log(BASE_URL,API_URL);
+import { BASE_URL } from "../../config.js";
 
 window.onload = function () {
   if(!localStorage.getItem("authToken")) {
@@ -45,6 +42,7 @@ if (token) {
         }
         if (role === "employee") {
           adminSection.forEach((section)=> section.remove());
+          
         }
         if(role==="admin") {
           employeeSection.forEach((section)=> section.remove());

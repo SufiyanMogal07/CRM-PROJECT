@@ -3,17 +3,18 @@
   $css = '<link rel="stylesheet" href="../assets/css/employee.css">';
   include("../layouts/dashboard_layout.php")
 ?>
-<main class="main-body p-5 d-flex flex-column">
-  <div class="d-flex justify-content-between align-items-center mb-5">
-    <h2 class="">Manage Employee</h2>
+<main class="main-body d-flex flex-column p-3">
+  <div class="main-container p-5">
+  <div class="d-flex justify-content-between align-items-center mb-5 top-head">
+    <h2>Manage Employee</h2>
     <div>
       <button id="reset" class="btn btn-danger">Reset</button>
       <button id="addEmployee" class="ms-2 btn btn-primary" data-bs-toggle="modal"
         data-bs-target="#addEmployeeInput">Add Employee</button>
     </div>
   </div>
-  <div class="employee-container">
-    <table id="EmployeeTable" class="table table-striped w-100">
+  <div class="employee-container table-container">
+    <table id="EmployeeTable" class="table table-bordered table-striped w-100">
       <thead>
         <tr>
           <th>#</th>
@@ -25,12 +26,21 @@
       </thead>
       <tbody>
       </tbody>
+      <tfoot>
+      <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Actions</th>
+        </tr>
+      </tfoot>
     </table>
+    <p class="pt-3 text-center fw-semibold">CRM PROJECT&copy; 2025</p>
     <!-- Add Employee Modal -->
-    <div class="modal fade" id="addEmployeeInput" tabindex="-1" aria-labelledby="inputModalLabel"
-      aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
+    <div class="modal fade" id="addEmployeeInput" tabindex="-1" aria-labelledby="inputModalLabel">
+    <div class="modal-dialog modal-dialog-centered">
+   <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="inputModalLabel">Enter Employee Details</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -45,7 +55,7 @@
               <div class="mb-3">
                 <label for="employeeEmail1" class="form-label">Email</label>
                 <input type="email" class="form-control" id="employeeEmail1" placeholder="Enter Employee email"
-                  required>
+                  required autocomplete="email">
               </div>
               <div class="mb-3">
                 <label for="employeePhone1" class="form-label">Phone</label>
@@ -55,7 +65,7 @@
               <div class="mb-3">
                 <label for="employeePassword1" class="form-label">Password</label>
                 <input type="password" class="form-control" id="employeePassword1"
-                  placeholder="Enter Employee Password" required>
+                placeholder="Enter Employee Password" required autocomplete="current-password">
               </div>
             </form>
           </div>
@@ -70,7 +80,7 @@
     <!-- Edit Employee Modal -->
     <div class="modal fade" id="editEmployeeInput" tabindex="-1" aria-labelledby="inputModalLabel"
       aria-hidden="true">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="inputModalLabel">Edit Employee Details</h5>
@@ -102,8 +112,9 @@
       </div>
     </div>
   </div>
+</div>
 </main>
 <?php
-$script = "<script type='module' src='../assets/js/employee.js'></script>";
+  $script = "<script type='module' src='../assets/js/employee.js'></script>";
 include("../components/footer.php");
 ?>

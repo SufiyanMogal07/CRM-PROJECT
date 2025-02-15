@@ -55,7 +55,7 @@ if (isset($header['Authorization'])) {
             echo json_encode(["success"=>true,"data"=>$data]);
         }else {
             
-            echo json_encode(["success"=>false,"message"=>"Empty Table"]);
+            echo json_encode(["success"=>false,"data"=>[],"message"=>"Empty Table"]);
         }
     } catch (Exception $e) {
         http_response_code(401); // Unauthorized

@@ -1,40 +1,101 @@
 /* Dashboard Widgets */
 
-.dashboard-widgets {
-    flex-wrap: nowrap;
-    gap: 5px;
+.main-container {
+    overflow-y: unset;
     overflow-x: auto;
 }
-.dashboard-widgets::-webkit-scrollbar {
-   display: none;
-}
-.dashboard-widget {
-    min-width: 380px;
-    cursor: pointer;
-    display: flex;
-    min-height: 220px;
-    justify-content: space-between;
-    align-items: center;
-}
-.dashboard-widget i {
-    font-size: 6.5rem;
-}
-.dashboard-widget p {
-    font-size: 1.3rem;
+
+.dashboard-widgets {
+    column-gap: 1rem;
+    row-gap: 1rem;
+    /* flex-wrap: wrap; */
+    overflow-y: auto;
 }
 
-@media screen and (max-width: 550px) {
+.dashboard-widgets::-webkit-scrollbar {
+    display: none;
+}
+
+.dashboard-widget {
+    min-width: 320px;
+    max-width: 320px;
+    cursor: pointer;
+    display: flex;
+    min-height: 200px;
+    gap: 2rem;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 8px;
+}
+
+.dashboard-widget i {
+    font-size: 4.6rem;
+}
+
+.dashboard-widget p {
+    font-size: 1.2rem;
+}
+
+.dashboard-widget p {
+    font-weight: 600;
+}
+
+@media screen and (max-width: 600px) {
     .dashboard-widgets {
         align-items: center !important;
     }
+
     .dashboard-widget {
         min-width: 320px;
         gap: 20px;
     }
+
     .dashboard-widget i {
         font-size: 5.5rem;
     }
+
     .dashboard-widget p {
         font-size: 1.2rem;
+    }
+
+    .main-container {
+        padding: 0 !important;
+    }
+
+    .main-container h2 {
+        text-align: center;
+    }
+
+    .dashboard-widgets {
+        flex-direction: column;
+    }
+
+    .dashboard-widget {
+        width: 75vw;
+        min-width: 300px;
+        max-width: 600px;
+    }
+
+    .dashboard-widget i {
+        font-size: 4.1rem;
+    }
+
+    .dashboard-widget p {
+        font-size: 1.2rem;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .dashboard-widget {
+        width: 80vw;
+        min-width: 200px;
+    }
+
+    .dashboard-widget i {
+        font-size: 3.3rem;
+    }
+
+    .dashboard-widget p {
+        font-size: 1rem;
     }
 }
