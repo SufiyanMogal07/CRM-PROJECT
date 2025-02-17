@@ -38,4 +38,3 @@ grid.addEventListener("click", () => {
 sideNav.addEventListener("mouseleave", () => {
   sideNav.classList.remove("expand");
 });
-

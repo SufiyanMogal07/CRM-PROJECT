@@ -14,7 +14,7 @@
    <div class="d-flex align-items-center gap-4">
 
      <div class="dropdown">
-       <a id="notification-dropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+       <a id="notification-dropdown" href="#" data-bs-auto-close="outside" data-bs-toggle="dropdown" aria-expanded="false">
          <i class="fas fa-bell fs-5 position-relative" style="color: #fff;">
            <span style="font-size: 0.5rem; min-width: 16px; padding: 3px 5px;" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
              0
@@ -22,10 +22,11 @@
            </span>
          </i>
         </a>
-         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark drop-down-menu-lg" aria-labelledby="notification-dropdown">
+         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg" aria-labelledby="notification-dropdown">
           <li><h6 class="dropdown-header">Notifications</h6></li>
-          <!-- <li><p class="dropdown-item">You have <span class="text-danger">0</span> new notification</p></li> -->
-          <li><p class="dropdown-item">A new Task has Assigned to You  <i class="fa-solid fa-xmark"></i></p></li>
+          <li><p class="dropdown-divider"></p></li>
+          <li><p class="text-center" id="no-notification">You have <span class="text-danger">0</span> new notifications</p></li>
+          <li><p class="dropdown-item">A new Task has Assigned to You A new Task has <i class="fa-solid fa-xmark"></i></p></li>
           <li><p class="dropdown-item">A new Task has Assigned to You  <i class="fa-solid fa-xmark"></i></p></li>
          </ul>
      </div>
@@ -35,7 +36,7 @@
          <img src="../assets/images/img_avatar.png" alt="Profile Picture" height="40" class="rounded-circle">
          <span id="profile-name" class="text-white ms-2">Unknown</span>
        </div>
-       <ul class="m-2 dropdown-menu dropdown-menu-dark" aria-labelledby="profile-info">
+       <ul class="m-2 dropdown-menu" aria-labelledby="profile-info">
          <li><a class="dropdown-item" href="../pages/changePassword.php">Change Password</a></li>
          <li><a class="dropdown-item admin-section" href="../pages/addAdmin.php">Add Admin</a></li>
          <li>

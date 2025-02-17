@@ -58,6 +58,9 @@ body {
 #notification-bell {
     cursor: pointer;
 }
+#no-notification {
+    padding: 0.5rem;
+}
 
 #side-nav .text {
     opacity: 0;
@@ -125,7 +128,36 @@ body {
     cursor: pointer;
 }
 
+.dropdown-menu-lg {
+    position: relative;
+    width: 300px;
+    overflow: hidden;
+    max-height: 380px;
+    min-height: 60px;
+    /* transition: all 0.5s ease-in-out; */
+}
 
+.dropdown-menu-lg .dropdown-item{
+    white-space: normal;
+    transition: all 0.3s ease-out;
+    border-bottom: 0.1px solid #d0d0d0;
+    padding-bottom: 0.7rem;
+}
+
+.dropdown-item {
+    position: relative;
+    border-bottom: 0.5px gray;
+}
+
+.dropdown-item i {
+    position: absolute;
+    top: 39%;
+    right: 3%;
+}
+
+.animate__animated {
+    animation-duration: 0.5s;
+}
 
 /* Responsive */
 @media only screen and (max-width: 1000px) {
