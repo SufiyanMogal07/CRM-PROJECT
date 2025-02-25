@@ -27,10 +27,10 @@ if (isset($data['email'], $data['password'])) {
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            
-            if ($password===$row['password'] || password_verify($password,$row['password'])) {
+
+            if (password_verify($password, $row['password'])) {
                 $issuedAt = time();
-                $expirationTime = ($role === "admin") ? $issuedAt + (3600*10) : $issuedAt + (3600*3);
+                $expirationTime = ($role === "admin") ? $issuedAt + (3600 * 10) : $issuedAt + (3600 * 3);
                 $payload = [
                     'iat' => $issuedAt,
                     'exp' => $expirationTime,
@@ -46,17 +46,19 @@ if (isset($data['email'], $data['password'])) {
                 echo json_encode(["success" => true, "message" => "Login Successfull", "token" => $jwt]);
                 return true;
             } else {
-                echo json_encode(["success" => false, "message" => "Invalid Password"]);
+                echo json_encode(["success" => false, "message" => "InCorrect Password!!"]);
                 return true;
             }
-        } return false;
-    }
-    if(!authenticateUser($conn,$email,$password,"admin","admin",$secretKey)) {
-        if(!authenticateUser($conn,$email,$password,"employee","employee",$secretKey)) {
-        echo json_encode(["success"=> false,"message"=> "$email Not Found!!!"]);
         }
+        return false;
     }
 
+
+    if (!authenticateUser($conn, $email, $password, "admin", "admin", $secretKey)) {
+        if (!authenticateUser($conn, $email, $password, "employee", "employee", $secretKey)) {
+            echo json_encode(["success" => false, "message" => "$email Not Found!!!"]);
+        }
+    }
 } else {
     echo json_encode(["success" => false, "message" => "Email and Password Required"]);
 }

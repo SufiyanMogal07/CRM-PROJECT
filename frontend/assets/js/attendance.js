@@ -1,20 +1,32 @@
-import { deleteSwalPopup, getActionbuttons, getBootStrapModal, getElementValue, SwalPopup } from "./helper/uiHelper.js";
+import {
+  deleteSwalPopup,
+  getActionbuttons,
+  getBootStrapModal,
+  getElementValue,
+  SwalPopup,
+} from "./helper/uiHelper.js";
 import { initDataTable } from "./helper/DataTableHelper.js";
-import {decodedToken,getData,addData,updateData,deleteData} from './helper/apiClient.js'
+import {
+  decodedToken,
+  getData,
+  addData,
+  updateData,
+  deleteData,
+} from "./helper/apiClient.js";
 import { BASE_URL } from "../../config.js";
 
 let table;
 $(document).ready(function () {
-   let token = decodedToken(jwt_decode);
-  let role = token.data.role
-  let crm =  `${BASE_URL}pages/CRMDashboard.php`
-
-  if(role!=="admin") {
+  let token = decodedToken(jwt_decode);
+  let role = token.data.role;
+  let crm = `${BASE_URL}pages/CRMDashboard.php`;
+  let url = "api/attendance/";
+  if (role !== "admin") {
     window.location.href = crm;
   }
   table = initDataTable(
     "#AttendanceTable",
-    "api/admin/getAllAttendance.php",
+    `${url}getAllAttendance.php`,
     [
       {
         data: null,
@@ -50,7 +62,13 @@ $(document).ready(function () {
         render: function (data, type, row) {
           let role = decodedToken(jwt_decode).data.role;
           if (role === "admin") {
-            return getActionbuttons("editAtt","editAttendanceInput","deleteAtt",row.attendance_id,`data-employee-id = ${row.employee_id}`);
+            return getActionbuttons(
+              "editAtt",
+              "editAttendanceInput",
+              "deleteAtt",
+              row.attendance_id,
+              `data-employee-id = ${row.employee_id}`
+            );
           } else {
             return `<span class="text-muted">No Actions Availble</span>`;
           }
@@ -60,17 +78,15 @@ $(document).ready(function () {
     "Server error or no response from server. Please try again later."
   );
 
-
   async function populateName(n = 2) {
-    let employee = await getData("api/admin/getAllEmployee.php");
+    let employee = await getData("api/employee/getAllEmployee.php");
     employee = await employee.data;
-    if(employee) {
+    if (employee) {
       const employeename = document.querySelector(`#employeeName${n}`);
       employeename.innerHTML += employee.map((item) => {
         return `<option value="${item.id}">${item.name}</option>`;
       });
     }
-
   }
 
   function clearForm(n = 2) {
@@ -78,7 +94,7 @@ $(document).ready(function () {
     $(`#employeeDate${n}`).val("");
     $(`#employeeStatus${n}`).val("");
   }
-  
+
   // Add Attendance
   async function addAttendance(employee_id, date, status) {
     let datas = {
@@ -87,9 +103,9 @@ $(document).ready(function () {
       status,
     };
 
-    let response = await addData("api/admin/addAttendance.php",datas);
+    let response = await addData(`${url}addAttendance.php`, datas);
     let modal = getBootStrapModal("markAttendanceInput");
-    let icon = response.success ? "success" : "error";
+    let icon = response.success ? "success" : "info";
     SwalPopup(Swal, response.message, icon);
     modal.hide();
     table.ajax.reload();
@@ -103,7 +119,7 @@ $(document).ready(function () {
     if (employee_id && date && status) {
       addAttendance(employee_id, date, status);
     } else {
-      SwalPopup(Swal,"All Input Fields required","warning")
+      SwalPopup(Swal, "All Input Fields required", "warning");
     }
   });
   populateName(1);
@@ -114,10 +130,10 @@ $(document).ready(function () {
       console.error("Empty Input!!");
     }
 
-    let response = await updateData("api/admin/updateAttendance.php",data);
+    let response = await updateData(`${url}updateAttendance.php`, data);
     let modal = getBootStrapModal("editAttendanceInput");
-    let icon = response.success ? "success": "error";
-    SwalPopup(Swal,response.message,icon);
+    let icon = response.success ? "success" : "info";
+    SwalPopup(Swal, response.message, icon);
     modal.hide();
     table.ajax.reload();
   }
@@ -135,7 +151,7 @@ $(document).ready(function () {
       };
       editAttendance(data);
     } else {
-      SwalPopup(Swal,"Input is Empty","danger")
+      SwalPopup(Swal, "Input is Empty", "danger");
     }
   });
 
@@ -147,7 +163,7 @@ $(document).ready(function () {
       .rows()
       .data()
       .toArray()
-      .find((item) => item.attendance_id === id);
+      .find((item) => item.attendance_id == id);
     document.querySelector(
       `#employeeName2 option[value="${emp_id}"]`
     ).selected = true;
@@ -164,17 +180,17 @@ $(document).ready(function () {
   $("#AttendanceTable").on("click", "#deleteAtt", async function () {
     let id = $(this).attr("data-id");
 
-     deleteSwalPopup(Swal).then(async (result) => {
-        if (result.isConfirmed) {
-          let response = await deleteData(`api/admin/deleteAttendance.php?id=${id}`);
-          let icon = response.success? "success": "error";
-          SwalPopup(Swal,response.message,icon);
-          table.ajax.reload();
-        }
-      });
-
+    deleteSwalPopup(Swal).then(async (result) => {
+      if (result.isConfirmed) {
+        let response = await deleteData(
+          `${url}deleteAttendance.php?id=${id}`
+        );
+        let icon = response.success ? "success" : "info";
+        SwalPopup(Swal, response.message, icon);
+        table.ajax.reload();
+      }
+    });
   });
-
 
   $("#markAttendanceInput #close,#markAttendanceInput .btn-close").click(
     function () {
@@ -187,15 +203,13 @@ $(document).ready(function () {
     }
   );
 
-  function filterByStatus(status) {
+  // function filterByStatus(status) {}
 
-  }
+  // let filterSelect = document.querySelector("#attendanceFilter");
 
-  let filterSelect = document.querySelector("#attendanceFilter")
-
-  filterSelect.addEventListener("change",function (e) {
-    console.log(e.target.value);
-  })
+  // filterSelect.addEventListener("change", function (e) {
+  //   console.log(e.target.value);
+  // });
 
   // Reload Table
   $("#reset").click(function () {

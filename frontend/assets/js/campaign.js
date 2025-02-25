@@ -4,9 +4,17 @@ import { getActionbuttons,SwalPopup,getBootStrapModal, deleteSwalPopup } from ".
 
 let table;
 $(document).ready(async function () {
+
     const decodedToken = jwt_decode(authToken);
+    let url = "api/campaigns/";
+
+    let role = decodedToken.data.role;
+  
+    if(role === "employee") {
+      document.getElementById("addCampaign").disabled = true;
+    }
     // Campaign Table Load
-    table = initDataTable("#CampaignTable","api/admin/getAllCampaign.php",
+    table = initDataTable("#CampaignTable",`${url}getAllCampaign.php`,
       [
         { 
           data: null,
@@ -39,7 +47,7 @@ $(document).ready(async function () {
 
     // Add Campaign
     async function addCampaign(name,CampaignDescription) {
-      let data = await addData("api/admin/addCampaign.php",{name,CampaignDescription});
+      let data = await addData(`${url}addCampaign.php`,{name,CampaignDescription});
       let modal = getBootStrapModal("addCampaignInput");
 
       if(data.success) {
@@ -65,7 +73,7 @@ $(document).ready(async function () {
 
     // Update Campaign 
     async function updateCampaign(id,campaign_name,description) {
-      let data = await updateData("/api/admin/updateCampaign.php",{
+      let data = await updateData(`${url}updateCampaign.php`,{
         id,campaign_name,description
       })
       let modal = getBootStrapModal("editCampaignInput");
@@ -95,7 +103,7 @@ $(document).ready(async function () {
 
     $("#CampaignTable").on("click","#editCampaign",function () {
       let id = $(this).attr("data-id");
-      const rowData = table.rows().data().toArray().find((item)=> item.id=== id);
+      const rowData = table.rows().data().toArray().find((item)=> item.id == id);
       
       $("#saveChangesBTN").attr("data-id",rowData.id);
       if(rowData) {
@@ -107,7 +115,7 @@ $(document).ready(async function () {
     // Delete Campaign
     async function deleteCampaign(id) {
       if(id) {
-        let data = await deleteData(`api/admin/deleteCampaign.php?id=${id}`);
+        let data = await deleteData(`${url}deleteCampaign.php?id=${id}`);
         let icon = data.success ? "success": "error";
         SwalPopup(Swal,data.message,icon);
         table.ajax.reload(null,false);

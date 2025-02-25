@@ -16,7 +16,7 @@ import {
 let table;
 $(document).ready(function () {
   const decodedToken = jwt_decode(authToken);
-
+  let url = "api/calllogs/";
   let columns = [
     {
       data: null,
@@ -67,7 +67,7 @@ $(document).ready(function () {
 
   table = initDataTable(
     "#CallLogsTable",
-    "api/shared/getAllCallLogs.php",
+    `${url}getAllCallLogs.php`,
     columns,
     "Server error or no response from server. Please try again later."
   );
@@ -100,19 +100,18 @@ $(document).ready(function () {
   }
 
   function clearForm(n = 2) {
-    if ($(`employeeName${n}`)) {
-      $(`employeeName${n}`).val("");
-    }
-    $(`userName${n}`).val("");
-    $(`callTime${n}`).val("");
-    $(`callDate${n}`).val("");
-    $(`outCome${n}`).val("");
-    $(`remarks${n}`).val("");
-    $(`conversion${n}`).val("");
+    $(`#employeeName${n}`).val("");
+    $(`#userName${n}`).val("");
+    $(`#callTime${n}`).val("");
+    $(`#callDate${n}`).val("");
+    $(`#outCome${n}`).val("");
+    $(`#remarks${n}`).val("");
+    $(`#conversion${n}`).val("");
   }
 
   async function addCallLogs(data) {
-    let response = await addData("api/shared/addCallLogs.php", data);
+    console.log(data);
+    let response = await addData(`${url}addCallLogs.php`, data);
     let icon = response.success ? "success" : "error";
     let modal = getBootStrapModal("addCallLogsInput");
     SwalPopup(Swal, response.message, icon);
@@ -146,16 +145,16 @@ $(document).ready(function () {
   });
 
   $("#addCallLogs").click(async function () {
-    populateOptions("api/shared/getAllUsers.php", "userName1", "name");
+    populateOptions("api/users/getAllUsers.php", "userName1", "name");
     let role = decodedToken.data.role;
     if (role === "admin") {
-      populateOptions("api/admin/getAllEmployee.php", "employeeName1", "name");
+      populateOptions("api/employee/getAllEmployee.php", "employeeName1", "name");
     }
   });
 
   // Update Call Logs
   async function updateCallLogs(data) {
-    let response = await updateData("api/shared/updateCallLogs.php", data);
+    let response = await updateData(`${url}updateCallLogs.php`, data);
     let modal = getBootStrapModal("editCallLogsInput");
 
     if (!response.success) {
@@ -195,10 +194,10 @@ $(document).ready(function () {
 
   $("#CallLogsTable").on("click", "#editCallLogs", async function () {
     let id = $(this).attr("data-id");
-    await populateOptions("api/shared/getAllUsers.php", "userName2", "name");
+    await populateOptions("api/users/getAllUsers.php", "userName2", "name");
     let role = decodedToken.data.role;
     if (role === "admin") {
-      await populateOptions("api/admin/getAllEmployee.php", "employeeName2", "name");
+      await populateOptions("api/employee/getAllEmployee.php", "employeeName2", "name");
     }
     const rowData = table
       .rows()
@@ -228,7 +227,7 @@ $(document).ready(function () {
   // Delete Call Logs
   async function deleteCallLogs(id) {
     if (id) {
-      let data = await deleteData(`api/shared/deleteCallLogs.php?id=${id}`);
+      let data = await deleteData(`${url}deleteCallLogs.php?id=${id}`);
       let icon = data.success ? "success" : "error";
       SwalPopup(Swal, data.message, icon);
       table.ajax.reload(null, false);
@@ -245,12 +244,14 @@ $(document).ready(function () {
     });
   });
 
-  $("#addCallLogsInput .btn-close,#addCallLogsInput #close").click(() =>
-    clearForm(1)
+  $("#addCallLogsInput .btn-close,#addCallLogsInput #close").click(() => {
+    clearForm(1);
+  }
   );
 
-  $("#editCallLogsInput .btn-close,#editCallLogsInput #close").click(() =>
-    clearForm(2)
+  $("#editCallLogsInput .btn-close,#editCallLogsInput #close").click(() => {
+    clearForm(2);
+  }
   );
 
   // Reload Table

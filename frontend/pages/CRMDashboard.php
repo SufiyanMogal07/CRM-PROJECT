@@ -10,7 +10,7 @@ include("../layouts/dashboard_layout.php");
     <div class="dashboard-widgets d-flex">
       <a href="./Employee.php" target="_blank" class="dashboard-widget bg-primary p-5 text-center text-white admin-section">
         <div>
-          <h1 class="fw-bolder fs-2">150</h1>
+          <h1 class="fw-bolder fs-2" id="employee-counter">0</h1>
           <p>Total Employees</p>
         </div>
         <div>
@@ -19,7 +19,7 @@ include("../layouts/dashboard_layout.php");
       </a>
       <a href="./User.php" target="_blank" class="dashboard-widget bg-secondary p-5 text-center text-white">
         <div>
-          <h1 class="fw-bolder fs-2 ">150</h1>
+          <h1 class="fw-bolder fs-2" id="user-counter">0</h1>
           <p>Total Users</p>
         </div>
         <div>
@@ -28,7 +28,7 @@ include("../layouts/dashboard_layout.php");
       </a>
       <a href="./Campaigns.php" target="_blank" class="dashboard-widget bg-warning p-5 text-center text-white">
         <div>
-          <h1 class="fw-bolder fs-2">150</h1>
+          <h1 class="fw-bolder fs-2"  id="campaign-counter">0</h1>
           <p>Total Campaigns</p>
         </div>
         <div>
@@ -37,7 +37,7 @@ include("../layouts/dashboard_layout.php");
       </a>
       <a href="./Tasks.php" target="_blank" class="dashboard-widget bg-danger p-5 text-center text-white admin-section">
         <div>
-          <h1 class="fw-bolder fs-2">150</h1>
+          <h1 class="fw-bolder fs-2" id="task-counter">0</h1>
           <p>Pending Tasks</p>
         </div>
         <div>
@@ -46,7 +46,7 @@ include("../layouts/dashboard_layout.php");
       </a>
       <a href="./MyTasks.php" target="_blank" class="dashboard-widget bg-danger p-5 text-center text-white employee-section">
         <div>
-          <h1 class="fw-bolder fs-2">150</h1>
+          <h1 class="fw-bolder fs-2" id="mytask-counter">0</h1>
           <p>Pending Tasks</p>
         </div>
         <div>
@@ -55,7 +55,7 @@ include("../layouts/dashboard_layout.php");
       </a>
       <a href="./CallLogs.php" target="_blank" class="dashboard-widget bg-success p-5 text-center text-white">
         <div>
-          <h1 class="fw-bolder fs-2">150</h1>
+          <h1 class="fw-bolder fs-2" id="calllog-counter">0</h1>
           <p>Call Logs</p>
         </div>
         <div>
@@ -63,10 +63,11 @@ include("../layouts/dashboard_layout.php");
         </div>
       </a>
     </div>
+    <?php include('../components/forms.php')?>
   </div>
 </main>
 
 <?php
-$script="";
+$script="<script type='module' src='../assets/js/widget.js'></script>";
 include("../components/footer.php");
 ?>

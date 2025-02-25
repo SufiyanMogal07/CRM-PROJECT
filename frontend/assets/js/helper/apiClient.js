@@ -45,7 +45,6 @@ export async function addData (endpoint,data) {
             }
         );
         if(!response.ok) throw new Error("Server is Not Responding, Something Went Wrong");
-
         return await response.json();
     } catch(error) {
         console.error(error);

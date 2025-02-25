@@ -8,14 +8,15 @@ let table;
 $(document).ready(function () {
 
   let token = decodedToken(jwt_decode);
-  let role = token.data.role
-  let crm =  `${BASE_URL}pages/CRMDashboard.php`
+  let role = token.data.role;
+  let crm =  `${BASE_URL}pages/CRMDashboard.php`;
+  let url = "api/tasks/"
 
   if(role!=="admin") {
     window.location.href = crm;
   }
   
-  table = initDataTable("#TaskTable","api/admin/getAllTask.php",[
+  table = initDataTable("#TaskTable",`${url}getAllTask.php`,[
     {
       data: null,
       render: function (data, type, row, meta) {
@@ -68,7 +69,7 @@ $(document).ready(function () {
       respone = respone.data;
       const select = $("#" + selector);
       select.empty();
-      select.append(`<option value="none" selected>Select</>`);
+      select.append(`<option value="" selected>Select</>`);
 
       respone.forEach((element) => {
         select.append(
@@ -76,29 +77,33 @@ $(document).ready(function () {
         );
       });
     } else {
-      SwalPopup(Swal,"Something Went Wrong While Populating Data!!","error");
+      const select = $("#" + selector);
+      select.empty();
+      select.append(`<option value="" selected>Select</>`);
+      console.log(respone);
     }
   }
   function clearForm(n = 2) {
-    $(`#campaignName${n}`).val("none");
-    $(`#employeeName${n}`).val("none");
-    $(`#userName${n}`).val("none");
+    $(`#campaignName${n}`).val("");
+    $(`#employeeName${n}`).val("");
+    $(`#userName${n}`).val("");
+    $(`#action${n}`).val("");
     if(n==2) {
-      $(`#status`).val("none");
+      $(`#status`).val("");
     }
   }
     populateOptions(
-      `/api/admin/getAllCampaign.php`,
+      `/api/campaigns/getAllCampaign.php`,
       "campaignName1",
       "campaign_name",
     );
     populateOptions(
-      `/api/admin/getAllEmployee.php`,
+      `/api/employee/getAllEmployee.php`,
       "employeeName1",
       "name",
     );
     populateOptions(
-      `/api/shared/getAllUsers.php`,
+      `/api/users/getAllUsers.php`,
       "userName1",
       "name",
     );
@@ -106,7 +111,7 @@ $(document).ready(function () {
 
   // ADD TASK
   async function addTask(data) {
-    let respone = await addData("/api/admin/addTask.php",data);
+    let respone = await addData(`${url}addTask.php`,data);
     let modal = getBootStrapModal("assignTaskInput");
     if(respone.success) {
       SwalPopup(Swal,respone.message,"success");
@@ -115,6 +120,7 @@ $(document).ready(function () {
     }
     modal.hide();
     table.ajax.reload(null,false);
+    clearForm(1);
   }
 
   $("#addTask").click(function () {
@@ -128,7 +134,7 @@ $(document).ready(function () {
       modal.hide();
       SwalPopup(Swal,"Input Field is Empty!","warning");
     } else {
-      let text = "none";
+      let text = "";
       if (
         campaign_id === text ||
         employee_id === text ||
@@ -152,7 +158,7 @@ $(document).ready(function () {
   // Edit Task
   async function updateTask(data) {
     if(!data) return console.warn("Data is Empty!!");
-    let respone = await updateData("api/admin/updateTask.php",data);
+    let respone = await updateData(`${url}updateTask.php`,data);
     let modal = getBootStrapModal("editTaskInput");
 
     if(respone.success) {
@@ -174,7 +180,7 @@ $(document).ready(function () {
       modal.hide();
       SwalPopup(Swal,"Input Field is Empty!","warning");
     } else {
-      let text = "none";
+      let text = "";
       if (status === text) {
         modal.hide();
         SwalPopup(Swal,"Status Not Selected","warning");
@@ -192,12 +198,13 @@ $(document).ready(function () {
   $("#TaskTable").on("click","#editTask",function () {
     let id = $(this).attr("data-id");
     let rowData = table.rows().data().toArray();
+    console.log(rowData);
     rowData = rowData.filter((item)=> item.taskID == id)[0];
     
     Promise.all([
-      populateOptions(`/api/admin/getAllCampaign.php`, "campaignName2", "campaign_name"),
-      populateOptions(`/api/admin/getAllEmployee.php`, "employeeName2", "name"),
-      populateOptions(`/api/shared/getAllUsers.php`, "userName2", "name")
+      populateOptions(`/api/campaigns/getAllCampaign.php`, "campaignName2", "campaign_name"),
+      populateOptions(`/api/employee/getAllEmployee.php`, "employeeName2", "name"),
+      populateOptions(`/api/users/getAllUsers.php`, "userName2", "name")
     ]).then(() => {
       // Now that the options are populated, set the selected options:
       document.querySelector(
@@ -223,7 +230,7 @@ $(document).ready(function () {
 
      async function deleteTask(id) {
         if(id) {
-          let data = await deleteData(`api/admin/deleteTask.php?id=${id}`);
+          let data = await deleteData(`${url}deleteTask.php?id=${id}`);
           let icon = data.success ? "success": "error";
           SwalPopup(Swal,data.message,icon);
           table.ajax.reload(null,false);

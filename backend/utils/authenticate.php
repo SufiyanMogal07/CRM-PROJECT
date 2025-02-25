@@ -6,13 +6,12 @@
         if(isset($headers['Authorization'])) {
 
             $token = trim(str_replace("Bearer ","",$headers['Authorization']));
-
             
             try {
                 $decodedToken = JWT::decode($token,new Key($secretKey,'HS256'));
                 return $decodedToken;
             } catch(Exception $e) {
-                sendResponse(401,['success' => false, 'message' => 'Token decoding error', 'error' => $e->getMessage()]);
+                sendResponse(400,['success' => false, 'message' => 'Token decoding error', 'error' => $e->getMessage()]);
             }
             
         } else {

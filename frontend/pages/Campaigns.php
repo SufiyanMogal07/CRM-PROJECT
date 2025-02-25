@@ -14,7 +14,7 @@ include("../layouts/dashboard_layout.php")
       </div>
     </div>
     <div class="campaigns-container table-container">
-      <table id="CampaignTable" class="table table-bordered table-striped">
+      <table id="CampaignTable" class="table table-bordered table-striped w-100">
         <thead>
           <tr>
             <th>#</th>
@@ -36,8 +36,8 @@ include("../layouts/dashboard_layout.php")
       </table>
       <!-- Add Campaign Modal -->
       <div class="modal fade" id="addCampaignInput" tabindex="-1" aria-labelledby="inputModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
+        >
+        <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="inputModalLabel">Enter Campaign Details</h5>
@@ -67,8 +67,8 @@ include("../layouts/dashboard_layout.php")
 
       <!-- Edit Campaign Modal -->
       <div class="modal fade" id="editCampaignInput" tabindex="-1" aria-labelledby="inputModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
+        >
+        <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="inputModalLabel">Edit Campaign Details</h5>
@@ -95,6 +95,8 @@ include("../layouts/dashboard_layout.php")
           </div>
         </div>
       </div>
+
+      <?php include('../components/forms.php')?>
     </div>
   </div>
 </main>

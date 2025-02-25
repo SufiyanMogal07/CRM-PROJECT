@@ -88,8 +88,7 @@ include("../layouts/dashboard_layout.php")
             </div>
             <div class="mb-3">
               <label for="remarks1" class="form-label">Enter Remarks for Call</label>
-              <textarea id="remarks1" name="remarks" class="form-control">
-              </textarea>
+              <textarea id="remarks1" name="remarks" class="form-control"></textarea>
             </div>
             <div class="mb-3">
               <label for="conversion1" class="form-label">Choose Converion</label>
@@ -150,8 +149,7 @@ include("../layouts/dashboard_layout.php")
             </div>
             <div class="mb-3">
               <label for="remarks2" class="form-label">Enter Remarks for Call</label>
-              <textarea id="remarks2" name="remarks" class="form-control">
-              </textarea>
+              <textarea id="remarks2" name="remarks" class="form-control"></textarea>
             </div>
             <div class="mb-3">
               <label for="conversion2" class="form-label">Choose Converion</label>
@@ -170,6 +168,7 @@ include("../layouts/dashboard_layout.php")
       </div>
     </div>
   </div>
+  <?php include('../components/forms.php')?>
   </div>
 </main>
 <?php

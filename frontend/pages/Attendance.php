@@ -7,7 +7,7 @@
   <div class="main-container p-5">
   <div class="d-flex justify-content-between align-items-center mb-5 top-head">
     <h2>Mark Attendance</h2>
-    <div>
+    <!-- <div>
       <select class="form-select" name="filter" id="attendanceFilter">
         <option selected disabled value="">Filter by</option>
         <option value="all" default>All</option>
@@ -15,7 +15,7 @@
         <option value="absent">Absent</option>
         <option value="leave">Leave</option>
       </select>
-    </div>
+    </div> -->
     <div>
       <button id="reset" class="btn btn-danger">Reset</button>
       <button id="addEmployee" class="ms-2 btn btn-primary" data-bs-toggle="modal"
@@ -39,18 +39,18 @@
   </div>
 
   <div class="modal fade" id="markAttendanceInput" tabindex="-1" aria-labelledby="inputModalLabel">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="inputModalLabel">Mark Employee Attendance</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form id="userForm1">
+          <form id="attendanceForm1">
             <div class="mb-3">
               <label for="employeeName1" class="form-label">Employee Name</label>
               <select class="form-control" id="employeeName1" name="EmployeeName">
-                <option value="" selected>None</option>
+                <option value="" selected>Select</option>
               </select>
             </div>
             <div class="mb-3">
@@ -60,7 +60,7 @@
             <div class="mb-3">
               <label for="employeeStatus1" class="form-label">Status</label>
               <select class="form-control" id="employeeStatus1">
-                <option value="" selected>None</option>
+                <option value="" selected>Select</option>
                 <option value="present">Present</option>
                 <option value="absent">Absent</option>
                 <option value="leave">Leave</option>
@@ -76,18 +76,18 @@
     </div>
   </div>
   <div class="modal fade" id="editAttendanceInput" tabindex="-1" aria-labelledby="inputModalLabel">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="inputModalLabel">Update Employee Attendance</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form id="userForm1">
+          <form id="attendanceForm2">
             <div class="mb-3">
               <label for="employeeName2" class="form-label">Employee Name</label>
               <select class="form-control" id="employeeName2" name="EmployeeName">
-                <option selected>None</option>
+                <option selected>Select</option>
               </select>
             </div>
             <div class="mb-3">
@@ -97,7 +97,7 @@
             <div class="mb-3">
               <label for="employeeStatus2" class="form-label">Status</label>
               <select class="form-control" id="employeeStatus2">
-                <option>None</option>
+                <option>Select</option>
                 <option value="present">Present</option>
                 <option value="absent">Absent</option>
                 <option value="leave">Leave</option>
@@ -112,6 +112,7 @@
       </div>
     </div>
   </div>
+  <?php include('../components/forms.php')?>
   </div>
 </main>
 <?php

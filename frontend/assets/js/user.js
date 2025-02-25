@@ -1,17 +1,22 @@
-import { API_URL } from "../../config.js";
-import { addData, authToken, decodedToken, deleteData, updateData } from "./helper/apiClient.js";
+import { addData, decodedToken, deleteData, updateData } from "./helper/apiClient.js";
 import { initDataTable } from "./helper/DataTableHelper.js";
 import {
   getActionbuttons,
   getBootStrapModal,
   SwalPopup,
-  getElementValue,
 } from "./helper/uiHelper.js";
 
 let table;
 $(document).ready(function () {
+  let url = "api/users/";
+  let token = decodedToken(jwt_decode);
+  let role = token.data.role;
+
+  if(role === "employee") {
+    document.getElementById("addUser").disabled = true;
+  }
   // User Table Load
-  table = initDataTable("#UserTable", "api/shared/getAllUsers.php", [
+  table = initDataTable("#UserTable", `${url}getAllUsers.php`, [
     {
       data: null,
       render: function (data, type, row, meta) {
@@ -64,7 +69,7 @@ $(document).ready(function () {
       city,
       passport,
     };
-    let response = await addData("api/admin/addUsers.php", data);
+    let response = await addData(`${url}addUsers.php`, data);
     let modal = getBootStrapModal("addUserInput");
     let icon = response.success ? "success" : "error";
     SwalPopup(Swal, response.message, icon);
@@ -107,7 +112,7 @@ $(document).ready(function () {
   });
   // Edit User
   async function updateUser({ ...data }) {
-    let response = await updateData("api/admin/updateUser.php", data);
+    let response = await updateData(`${url}updateUser.php`, data);
     let modal = getBootStrapModal("editUserInput");
     let icon = response.success ? "success" : "error";
     SwalPopup(Swal, response.message, icon);
@@ -150,7 +155,7 @@ $(document).ready(function () {
       .rows()
       .data()
       .toArray()
-      .find((item) => item.id === id);
+      .find((item) => item.id == id);
 
     if (rowData) {
       $("#userName2").val(rowData.name);
@@ -170,7 +175,7 @@ $(document).ready(function () {
       console.error("Id is not passed");
       return;
     }
-    let response = await deleteData(`api/admin/deleteUser.php?id=${id}`);
+    let response = await deleteData(`${url}deleteUser.php?id=${id}`);
     let icon = response.success ? "success" : "error";
     SwalPopup(Swal, response.message, icon);
     table.ajax.reload();

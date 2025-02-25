@@ -3,9 +3,9 @@ import { initDataTable } from "./helper/DataTableHelper.js";
 
 let table
 $(document).ready(function () {
-  // alert("dom loaded")
+  let url = "api/tasks/"
 
-  table = initDataTable("#myTaskTable", "api/admin/getAllTask.php", [
+  table = initDataTable("#myTaskTable", `${url}getAllTask.php`, [
     {
       data: null,
       render: function (data, type, row, meta) {
@@ -60,10 +60,9 @@ $(document).ready(function () {
       cancelButtonText: "No, keep current",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        console.log("Status changed to: " + status);
+        
         let data = {id,status};
-        console.log(data);
-        let result = await updateData('/api/admin/updateTask.php',data);
+        let result = await updateData(`${url}updateTask.php`,data);
         console.log(result);
         if(result.success) {
           Swal.fire({

@@ -42,7 +42,8 @@
         </tr>
       </tfoot>
     </table>
-    <div class="modal fade" id="addUserInput" tabindex="-1" aria-labelledby="inputModalLabel" aria-hidden="true">
+  </div>
+  <div class="modal fade" id="addUserInput" tabindex="-1" aria-labelledby="inputModalLabel">
       <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
@@ -50,7 +51,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form id="userForm">
+            <form id="userForm1">
               <div class="mb-3">
                 <label for="userName1" class="form-label">Name</label>
                 <input type="text" class="form-control" id="userName1" placeholder="Enter User's name" required>
@@ -85,7 +86,7 @@
         </div>
       </div>
     </div>
-    <div class="modal fade" id="editUserInput" tabindex="-1" aria-labelledby="inputModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editUserInput" tabindex="-1" aria-labelledby="inputModalLabel">
       <div class="modal-dialog  modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
@@ -93,7 +94,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form id="userForm">
+            <form id="userForm2">
               <div class="mb-3">
                 <label for="userName2" class="form-label">Name</label>
                 <input type="text" class="form-control" id="userName2" placeholder="Enter User's name" required>
@@ -128,7 +129,7 @@
         </div>
       </div>
     </div>
-  </div>
+    <?php include('../components/forms.php')?>
   </div>
 </main>
 <?php

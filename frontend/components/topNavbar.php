@@ -17,17 +17,16 @@
        <a id="notification-dropdown" href="#" data-bs-auto-close="outside" data-bs-toggle="dropdown" aria-expanded="false">
          <i class="fas fa-bell fs-5 position-relative" style="color: #fff;">
            <span style="font-size: 0.5rem; min-width: 16px; padding: 3px 5px;" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-             0
-             <span class="visually-hidden">unread messages</span>
+             <span id="message-counter">0</span>
            </span>
          </i>
         </a>
          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg" aria-labelledby="notification-dropdown">
           <li><h6 class="dropdown-header">Notifications</h6></li>
           <li><p class="dropdown-divider"></p></li>
-          <li><p class="text-center" id="no-notification">You have <span class="text-danger">0</span> new notifications</p></li>
-          <li><p class="dropdown-item">A new Task has Assigned to You A new Task has <i class="fa-solid fa-xmark"></i></p></li>
-          <li><p class="dropdown-item">A new Task has Assigned to You  <i class="fa-solid fa-xmark"></i></p></li>
+          <div class="notification-list">
+            
+          </div>
          </ul>
      </div>
 
@@ -37,8 +36,8 @@
          <span id="profile-name" class="text-white ms-2">Unknown</span>
        </div>
        <ul class="m-2 dropdown-menu" aria-labelledby="profile-info">
-         <li><a class="dropdown-item" href="../pages/changePassword.php">Change Password</a></li>
-         <li><a class="dropdown-item admin-section" href="../pages/addAdmin.php">Add Admin</a></li>
+         <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#changePassword">Change Password</a></li>
+         <li><a class="dropdown-item admin-section" data-bs-toggle="modal" data-bs-target="#addAdmin">Add Admin</a></li>
          <li>
            <hr class="dropdown-divider">
          </li>

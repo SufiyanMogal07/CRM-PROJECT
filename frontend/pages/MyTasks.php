@@ -32,6 +32,7 @@ include("../layouts/dashboard_layout.php")
             </tfoot>
         </table>
     </div>
+    <?php include('../components/forms.php')?>
     </div>
 </main>
 

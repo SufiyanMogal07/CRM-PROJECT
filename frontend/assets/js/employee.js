@@ -1,5 +1,5 @@
 import { BASE_URL } from "../../config.js";
-import { addData, deleteData, updateData,authToken, decodedToken } from "./helper/apiClient.js";
+import { addData, deleteData, updateData, decodedToken } from "./helper/apiClient.js";
 import { initDataTable } from "./helper/DataTableHelper.js";
 import {
   getActionbuttons,
@@ -13,9 +13,10 @@ import {
 let table;
 $(document).ready(function () {
   // Employee Table Initialize
-   let token = decodedToken(jwt_decode);
+  let token = decodedToken(jwt_decode);
   let role = token.data.role
   let crm =  `${BASE_URL}pages/CRMDashboard.php`
+  const url = "api/employee/";
 
   if(role!=="admin") {
     window.location.href = crm;
@@ -23,7 +24,7 @@ $(document).ready(function () {
   
   table = initDataTable(
     "#EmployeeTable",
-    "api/admin/getAllEmployee.php",
+    `${url}getAllEmployee.php`,
     [
       {
         data: null,
@@ -77,7 +78,7 @@ $(document).ready(function () {
       phone: phone,
       password: pass,
     };
-    let employee = await addData("api/admin/addEmployee.php", data);
+    let employee = await addData(`${url}addEmployee.php`, data);
     let modal = getBootStrapModal("addEmployeeInput");
     let icon = employee.success ? "success" : "error";
     SwalPopup(Swal, employee.message, icon);
@@ -111,7 +112,7 @@ $(document).ready(function () {
 
   // Edit Employee
   async function updateEmployee({ ...data }) {
-    let response = await updateData("api/admin/updateEmployee.php",data);
+    let response = await updateData(`${url}updateEmployee.php`,data);
     let modal = getBootStrapModal("editEmployeeInput");
     let icon = response.success ? "success": "error";
     SwalPopup(Swal,response.message,icon);
@@ -136,13 +137,14 @@ $(document).ready(function () {
       SwalPopup(Swal,"All Input fields Required!!", "error");
     }
   });
+
   $("#EmployeeTable").on("click", "#editEmployee", function () {
     const id = $(this).attr("data-id");
     const rowData = table
       .rows()
       .data()
       .toArray()
-      .find((item) => item.id === id);
+      .find((item) => item.id == id);
     if (rowData) {
       $("#employeeName2").val(rowData.name);
       $("#employeeEmail2").val(rowData.email);
@@ -160,7 +162,7 @@ $(document).ready(function () {
       console.error("Id is not passed");
       return;
     }
-    let data = await deleteData(`api/admin/deleteEmployee.php?id=${id}`);
+    let data = await deleteData(`${url}deleteEmployee.php?id=${id}`);
     let icon = data.success? "success": "error";
 
     SwalPopup(Swal,data.message,icon);
