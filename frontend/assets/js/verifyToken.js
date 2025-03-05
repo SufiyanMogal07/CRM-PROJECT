@@ -1,4 +1,4 @@
-import { BASE_URL } from "../../config.js";
+import { BASE_URL,LOGIN_URL } from "../../config.js";
 
 window.onload = function () {
   if(!localStorage.getItem("authToken")) {
@@ -13,10 +13,9 @@ const employeeSection = document.querySelectorAll(".employee-section");
 
 const token = localStorage.getItem("authToken");
 const urls = {
-  login: `${BASE_URL}index.php`,
+  login: `${LOGIN_URL}`,
   crm: `${BASE_URL}pages/CRMDashboard.php`,
 };
-
 
 if (token) {
   try {

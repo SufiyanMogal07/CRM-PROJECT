@@ -1,7 +1,13 @@
-* {
-    font-family: sans-serif;
-    color: #000;
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+body {
+    font-family: "Roboto", sans-serif;
 }
+h1,h2,h3 {
+    font-family: "Montserrat", sans-serif;
+}
+
 .container-fluid {
     height: 100vh;
     margin: 0 !important;
@@ -15,8 +21,27 @@
     max-width: 600px;
     width: 100%;
 }
+
+input {
+    font-size: 1.1rem !important;
+    padding: 8px 14px!important;
+}
+
+input::placeholder {
+    color: rgb(59, 59, 59) !important;
+}
+
+.input-group {
+    border: 1px solid rgb(179, 179, 179) !important;
+    border-radius: 10px !important;
+}
+
 .login-box form {
-    padding: 4rem;
+    padding: 3.5rem;
+}
+
+#submit-btn {
+    font-weight: 500;
 }
 
 @media screen and (max-width: 600px) {
@@ -25,9 +50,10 @@
         padding: 0;
     }
   .login-box {
-    background-color: black;
+    border-radius: 0px;
+    box-shadow: unset;
   }
   .login-box form {
-    padding: 3rem;
+    padding: 1rem;
 }
   }

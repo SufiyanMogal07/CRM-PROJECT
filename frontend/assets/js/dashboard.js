@@ -1,4 +1,4 @@
-import { BASE_URL } from "../../config.js";
+import { BASE_URL, LOGIN_URL } from "../../config.js";
 import { addData, updateData } from './helper/apiClient.js'
 import {getElementValue,getBootStrapModal, SwalPopup} from './helper/uiHelper.js'
 const grid = document.querySelector("#grid-icon");
@@ -24,7 +24,7 @@ document.querySelector("#logout").addEventListener("click", () => {
   }).then((result) => {
     if (result.isConfirmed) {
       localStorage.removeItem("authToken");
-      window.location.replace(`${BASE_URL}/index.php`);
+      window.location.replace(`${LOGIN_URL}`);
     }
   });
 });
