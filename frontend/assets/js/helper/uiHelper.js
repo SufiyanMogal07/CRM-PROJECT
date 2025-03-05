@@ -11,9 +11,10 @@ export function getBootStrapModal(ModalId) {
 
 export function SwalPopup (Swal,message,icons) {
     Swal.fire({
-        title: message,
+        title: "New Mesage",
+        text: message,
         icon: icons,
-        timer: 3000
+        timer: 5000
     })
 }
 

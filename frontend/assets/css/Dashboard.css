@@ -48,7 +48,7 @@ body {
 .side-bar {
     height: calc(100vh - 88px);
     width: 90px;
-    transition: all .5s ease-in-out;
+    transition: width .5s ease-in-out;
     overflow-y: auto;
     background: linear-gradient(135deg, #1f3b4d, #27496d);
     position: relative;

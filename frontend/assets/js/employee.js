@@ -81,9 +81,9 @@ $(document).ready(function () {
     let employee = await addData(`${url}addEmployee.php`, data);
     let modal = getBootStrapModal("addEmployeeInput");
     let icon = employee.success ? "success" : "error";
+    modal.hide();
     SwalPopup(Swal, employee.message, icon);
     clearForm(1);
-    modal.hide();
     table.ajax.reload();
   }
   $("#addEmployeeBTN").click(function () {

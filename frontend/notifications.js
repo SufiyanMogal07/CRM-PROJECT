@@ -32,10 +32,8 @@ if (role === "employee") {
 function requestPermission() {
   Notification.requestPermission().then((permission) => {
     if (permission === "granted") {
-      console.log("Permission Granted!!!");
       return true;
     } else {
-      console.log("Permission Denied!!!");
       return false;
     }
   })
@@ -85,8 +83,7 @@ async function addUiNotification() {
 }
 
 async function markAsRead(id) {
-  let data = {id}
-  let response = await updateData(`api/notifications/updateNotification.php`,data);
+  let response = await deleteData(`api/notifications/updateNotification.php?id=${id}`);
   if (!response) {
     console.warn(response.message);
     return false;
@@ -109,7 +106,7 @@ $(".dropdown-menu-lg").on("click", ".dropdown-item > i", function () {
         --counter;
         notification_counter.innerHTML = counter;
         if (counter === 0) {
-          console.log("Inside")
+
           notification_dropdown.innerHTML = '<li class="parent-notify"><p class="text-center" id="no-notification">You have <span class="text-danger">0</span> new notifications</p></li>';
         }
       } else {

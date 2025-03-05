@@ -50,6 +50,15 @@ include("../layouts/dashboard_layout.php");
           <p>Pending Tasks</p>
         </div>
         <div>
+        <i class="fa-solid fa-clock-rotate-left"></i>
+        </div>
+      </a>
+      <a href="./MyTasks.php" target="_blank" class="dashboard-widget bg-primary p-5 text-center text-white employee-section">
+        <div>
+          <h1 class="fw-bolder fs-2" id="totaltask-counter">0</h1>
+          <p>Total Tasks</p>
+        </div>
+        <div>
         <i class="fa-solid fa-square-phone"></i>
         </div>
       </a>

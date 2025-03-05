@@ -14,8 +14,8 @@
   <div class="container-fluid text-white d-flex justify-content-center align-items-center">
     <div class="login-box bg-white h-auto w-auto">
       <form id="form" method="post" class="row flex-column justify-content-center">
-        <h2 class="mb-3 text-center fs-2 heading">Welcome, Back Again</h2>
-        <h3 class="text-center fs-5">Please Login In to Access Dashboard</h3>
+        <h2 class="mb-2 text-center heading">Welcome, Back Again</h2>
+        <h2 class="text-center fs-4 text-secondary-emphasis">Please Login In to Access Dashboard</h2>
 
         <div class="form-group pt-5">
           <label class="form-label mb-1 fs-semibold" for="emailInput">Email</label>

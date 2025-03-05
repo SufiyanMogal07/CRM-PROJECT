@@ -60,6 +60,15 @@ $result = $stmt->get_result();
 $result = $result->fetch_assoc();
 $tasks = $result['pending_tasks'];
 
+// Total Tasks
+$sql = "SELECT COUNT(*) AS total_tasks FROM task WHERE employee_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$result = $stmt->get_result();
+$result = $result->fetch_assoc();
+$total_tasks = $result['total_tasks'];
+
 // Total Call logs
 $sql = "SELECT COUNT(*) AS total_calllogs FROM calllog WHERE employee_id = ?";
 $stmt = $conn->prepare($sql);
@@ -73,6 +82,7 @@ $data = [
     ["user-counter"      => $users],
     ["campaign-counter"  => $campaigns],
     ["mytask-counter"    => $tasks],
+    ["totaltask-counter"    => $total_tasks],
     ["calllog-counter"   => $calllogs],
 ];
 

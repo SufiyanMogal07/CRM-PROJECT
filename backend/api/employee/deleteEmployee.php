@@ -1,6 +1,7 @@
 <?php
 require '../../vendor/autoload.php';
 require "../../config/config.php";
+require "../../utils/helper.php";
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../..');
 $dotenv->load();
 
@@ -25,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'DELETE') {
 }
 $id = $_GET['id'];
 
-if(!isset($id)){
+if (!isset($id)) {
     http_response_code(405);
     echo json_encode(["success" => false, "message" => "id parameter empty!!"]);
     exit();
@@ -39,7 +40,8 @@ if (!isset($header['Authorization'])) {
     exit();
 }
 
-if($header['Authorization']) {
+
+if ($header['Authorization']) {
     $token = $header['Authorization'];
     $token = trim(str_replace('Bearer ', '', $token));
     try {
@@ -51,11 +53,22 @@ if($header['Authorization']) {
             echo json_encode(["success" => false, "message" => "Not Allowed!!"]);
             exit();
         }
+
+        // Employee Exist or Not Check
         $admin_id = $decodedToken->data->id;
         $stmt = $conn->prepare("DELETE FROM employee WHERE id = ? AND created_by = ?");
-        $stmt->bind_param("ii",$id,$admin_id);
+        $stmt->bind_param("ii", $id, $admin_id);
 
-        if($stmt->execute() ){
+        // Attendance
+        checkReference("Employee","attendance", "employee_id", "created_by", $id, $admin_id);
+
+        // Tasks
+        checkReference("Employee","task", "employee_id", "created_by", $id, $admin_id);
+
+        // callLog
+        checkReference("Employee","calllog", "employee_id", "admin_id", $id, $admin_id);
+
+        if ($stmt->execute()) {
             http_response_code(200);
             echo json_encode(["success" => true, "message" => "Employee Deleted Successfully!!"]);
         } else {
