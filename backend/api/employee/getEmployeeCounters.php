@@ -7,7 +7,8 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../..');
 $dotenv->load();
 
 $secretKey = $_ENV['JWT_SECRET_KEY'];
-
+$BASE_URL = $_ENV['BASE_URL'];
+header("Access-Control-Allow-Origin: $BASE_URL");
 header("Access-Control-Allow-Methods: GET,OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Content-Type: application/json");

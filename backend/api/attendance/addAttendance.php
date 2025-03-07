@@ -9,10 +9,11 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
 $secretKey = $_ENV['JWT_SECRET_KEY'];
-// header("Access-Control-Allow-Origin: *");
-// header("Access-Control-Allow-Methods: POST, OPTIONS");
-// header("Access-Control-Allow-Headers: Content-type, Authorization");
-// header("Content-Type: application/json");
+$BASE_URL = $_ENV['BASE_URL'];
+header("Access-Control-Allow-Origin: $BASE_URL");
+header("Access-Control-Allow-Methods: POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-type, Authorization");
+header("Content-Type: application/json");
 
 $data = json_decode(file_get_contents("php://input"),true);
 $headers = getallheaders();

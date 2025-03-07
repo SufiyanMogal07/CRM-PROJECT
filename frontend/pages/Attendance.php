@@ -7,15 +7,6 @@
   <div class="main-container p-5">
   <div class="d-flex justify-content-between align-items-center mb-5 top-head">
     <h2>Mark Attendance</h2>
-    <!-- <div>
-      <select class="form-select" name="filter" id="attendanceFilter">
-        <option selected disabled value="">Filter by</option>
-        <option value="all" default>All</option>
-        <option value="present">Present</option>
-        <option value="absent">Absent</option>
-        <option value="leave">Leave</option>
-      </select>
-    </div> -->
     <div>
       <button id="reset" class="btn btn-danger">Reset</button>
       <button id="addEmployee" class="ms-2 btn btn-primary" data-bs-toggle="modal"

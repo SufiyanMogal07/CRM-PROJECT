@@ -1,4 +1,4 @@
-import { getData, updateData } from "./helper/apiClient.js";
+import { updateData } from "./helper/apiClient.js";
 import { initDataTable } from "./helper/DataTableHelper.js";
 
 let table
@@ -37,12 +37,6 @@ $(document).ready(function () {
     },
     { data: "action" },
   ]);
-
-  // $("#myTaskTable").on("change",'.form-s',function () {
-  //   let status = $(this).val();
-  //   let id = $(this).attr('data-id');
-  //   console.log(`Row with Id: ${id} and status: ${status}`);
-  // })
 
   $(document).on("change", "select.form-s", function () {
     let id = $(this).attr('data-id');

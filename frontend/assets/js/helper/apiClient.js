@@ -1,4 +1,4 @@
-import { API_URL } from "../../../config.js";
+import { BACKEND_URL } from "../../../config.js";
 
 export const authToken = localStorage.getItem("authToken") || "";
 
@@ -19,7 +19,7 @@ export const defaultHeaders = {
 export async function getData(endpoint) {
     if(!endpoint) return {success: false,message: "Error! Endpoint is Missing"};
     try {
-        const response = await fetch(API_URL + endpoint,
+        const response = await fetch(BACKEND_URL + endpoint,
             {
                 method: "GET",
                 headers: defaultHeaders
@@ -37,7 +37,7 @@ export async function getData(endpoint) {
 export async function addData (endpoint,data) {
     if(!endpoint || !data) return {success: false,message: "Error! Endpoint and Data is Missing!!"}; 
     try {
-        let response = await fetch(API_URL+endpoint,
+        let response = await fetch(BACKEND_URL+endpoint,
             {
                 method: 'POST',
                 headers: defaultHeaders,
@@ -56,7 +56,7 @@ export async function updateData(endpoint,data) {
     if(!endpoint || !data) return {success: false,message: "Error! Endpoint and Data is Missing!!"}; 
 
     try {
-        let response = await fetch(API_URL+endpoint,
+        let response = await fetch(BACKEND_URL+endpoint,
             {
                 method: "PATCH",
                 headers: defaultHeaders,
@@ -76,7 +76,7 @@ export async function updateData(endpoint,data) {
 export async function deleteData(endpoint) {
     if(!endpoint) return {success: false,message: "Error! Endpoint is Missing!!"}; 
     try {
-        let response = await fetch(API_URL+endpoint,
+        let response = await fetch(BACKEND_URL+endpoint,
             {
                 method: "DELETE",
                 headers: defaultHeaders,

@@ -13,13 +13,13 @@ import {
   updateData,
   deleteData,
 } from "./helper/apiClient.js";
-import { BASE_URL } from "../../config.js";
+import { FRONTEND_URL } from "../../config.js";
 
 let table;
 $(document).ready(function () {
   let token = decodedToken(jwt_decode);
   let role = token.data.role;
-  let crm = `${BASE_URL}pages/CRMDashboard.php`;
+  let crm = `${FRONTEND_URL}/pages/dashboard.php`;
   let url = "api/attendance/";
   if (role !== "admin") {
     window.location.href = crm;
@@ -202,15 +202,7 @@ $(document).ready(function () {
       clearForm();
     }
   );
-
-  // function filterByStatus(status) {}
-
-  // let filterSelect = document.querySelector("#attendanceFilter");
-
-  // filterSelect.addEventListener("change", function (e) {
-  //   console.log(e.target.value);
-  // });
-
+  
   // Reload Table
   $("#reset").click(function () {
     table.ajax.reload(null, false);

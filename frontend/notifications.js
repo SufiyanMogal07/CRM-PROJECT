@@ -1,4 +1,4 @@
-import { authToken, decodedToken, deleteData, updateData } from './assets/js/helper/apiClient.js'
+import { authToken, decodedToken, deleteData } from './assets/js/helper/apiClient.js'
 import { getData } from './assets/js/helper/apiClient.js';
 Pusher.logToConsole = false;
 
@@ -127,7 +127,6 @@ channel.bind(event, function (data) {
   addPushNotification(data);
   addUiNotification();
 })
-
 
 addUiNotification();
 

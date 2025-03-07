@@ -1,4 +1,4 @@
-import { BASE_URL } from "../../config.js";
+import { FRONTEND_URL } from "../../config.js";
 import { addData, deleteData, updateData, decodedToken } from "./helper/apiClient.js";
 import { initDataTable } from "./helper/DataTableHelper.js";
 import {
@@ -15,7 +15,7 @@ $(document).ready(function () {
   // Employee Table Initialize
   let token = decodedToken(jwt_decode);
   let role = token.data.role
-  let crm =  `${BASE_URL}pages/CRMDashboard.php`
+  let crm =  `${FRONTEND_URL}pages/dashboard.php`
   const url = "api/employee/";
 
   if(role!=="admin") {

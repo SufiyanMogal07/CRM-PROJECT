@@ -1,11 +1,11 @@
-import {API_URL} from '../../../config.js';
+import {BACKEND_URL} from '../../../config.js';
 import { defaultHeaders } from './apiClient.js';
 
 export function initDataTable(selector,endpoint,columns) {
 
     return $(selector).DataTable({
         ajax: {
-            url: `${API_URL + endpoint}`,
+            url: `${BACKEND_URL + endpoint}`,
             type: 'GET',
             headers: defaultHeaders
         },

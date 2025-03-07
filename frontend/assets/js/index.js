@@ -1,8 +1,8 @@
-import { BASE_URL,API_URL } from "../../config.js";
+import { FRONTEND_URL,BACKEND_URL } from "../../config.js";
 
 
 if (localStorage.getItem("authToken")) {
-  window.location.href = `${BASE_URL}pages/CRMDashboard.php`;
+  window.location.href = `${FRONTEND_URL}pages/dashboard.php`;
 }
 
 const email = document.querySelector("#emailInput");
@@ -41,7 +41,7 @@ submit.addEventListener("click", (e) => {
         email: emailValue,
         password: passValue,
       };
-      fetch(`${API_URL}auth/login.php`, {
+      fetch(`${BACKEND_URL}/api/auth/login.php`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -58,7 +58,7 @@ submit.addEventListener("click", (e) => {
           if (data.success) {
             localStorage.setItem("authToken", data.token);
             window.location.href =
-              `${BASE_URL}pages/CRMDashboard.php`;
+              `${FRONTEND_URL}pages/dashboard.php`;
           } else {
             Swal.fire({
               title: data.message,

@@ -7,6 +7,8 @@ require '../../utils/helper.php';
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../..');
 $dotenv->load();
+$BASE_URL = $_ENV['BASE_URL'];
+header("Access-Control-Allow-Origin: $BASE_URL");
 header("Access-Control-Allow-Methods: PATCH,OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Content-Type: application/json");
@@ -39,7 +41,7 @@ if($role!=="admin") {
 $id = $data["id"];
 $campaign_name = $data['campaign_name'];
 $description = $data['description'];
-$admin_id = ($role === "admin" ? $decodedToken->data->id: getAdminId($id,"calllog"));
+$admin_id = ($role === "admin" ? $decodedToken->data->id: getAdminId($id,"calllog",$id));
 
 if(empty($id) || empty($campaign_name) || empty($campaign_name) || empty($admin_id)) {
     sendResponse(500,["success"=> false, "message"=>"Sent Data is Empty!!"]);

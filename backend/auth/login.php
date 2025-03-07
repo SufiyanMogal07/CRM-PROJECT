@@ -7,7 +7,8 @@ $secretKey = $_ENV['JWT_SECRET_KEY'];
 
 use Firebase\JWT\JWT;
 
-header("Access-Control-Allow-Origin: *");
+$BASE_URL = $_ENV['BASE_URL'];
+header("Access-Control-Allow-Origin: $BASE_URL");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Content-Type: application/json");

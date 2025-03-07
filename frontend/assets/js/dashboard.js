@@ -1,4 +1,4 @@
-import { BASE_URL, LOGIN_URL } from "../../config.js";
+import { LOGIN_URL } from "../../config.js";
 import { addData, updateData } from './helper/apiClient.js'
 import {getElementValue,getBootStrapModal, SwalPopup} from './helper/uiHelper.js'
 const grid = document.querySelector("#grid-icon");
@@ -71,7 +71,6 @@ async function addAdmin() {
     let data = {
       name,email,phone,password
     }
-    console.log(data);
     if(validateEmail(email)) {
       let response = await addData('api/admin/addAdmin.php',data);
       if(response.success) {

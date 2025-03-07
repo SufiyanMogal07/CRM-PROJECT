@@ -1,7 +1,7 @@
 import { initDataTable } from "./helper/DataTableHelper.js";
 import { getActionbuttons, getBootStrapModal, getElementValue, SwalPopup,deleteSwalPopup } from "./helper/uiHelper.js";
 import { addData, decodedToken, deleteData, getData, updateData } from "./helper/apiClient.js";
-import { BASE_URL } from "../../config.js";
+import { FRONTEND_URL } from "../../config.js";
 
 
 let table;
@@ -9,7 +9,7 @@ $(document).ready(function () {
 
   let token = decodedToken(jwt_decode);
   let role = token.data.role;
-  let crm =  `${BASE_URL}pages/CRMDashboard.php`;
+  let crm =  `${FRONTEND_URL}pages/dashboard.php`;
   let url = "api/tasks/"
 
   if(role!=="admin") {
