@@ -33,9 +33,9 @@ grid.addEventListener("click", () => {
   sideNav.classList.toggle("expand");
 });
 
-// sideNav.addEventListener("mouseenter", () => {
-//   sideNav.classList.add("expand");
-// });
+sideNav.addEventListener("mouseenter", () => {
+  sideNav.classList.add("expand");
+});
 
 sideNav.addEventListener("mouseleave", () => {
   sideNav.classList.remove("expand");

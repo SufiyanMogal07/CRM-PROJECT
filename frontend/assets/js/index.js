@@ -41,7 +41,7 @@ submit.addEventListener("click", (e) => {
         email: emailValue,
         password: passValue,
       };
-      fetch(`${BACKEND_URL}/api/auth/login.php`, {
+      fetch(`${BACKEND_URL}auth/login.php`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",

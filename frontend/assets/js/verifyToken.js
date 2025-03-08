@@ -2,7 +2,7 @@ import { FRONTEND_URL,LOGIN_URL } from "../../config.js";
 
 window.onload = function () {
   if(!localStorage.getItem("authToken")) {
-    window.location.replace (`${BASE_URL}`);
+    window.location.replace (`${LOGIN_URL}`);
     return;
   }
 }
