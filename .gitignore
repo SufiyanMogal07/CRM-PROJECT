@@ -1,4 +1,4 @@
 backend/.env
 backend/.env.production
 backend/vendor
-frontend/config.js
+frontend/config,js

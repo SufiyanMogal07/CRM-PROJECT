@@ -46,9 +46,19 @@ if ($_SERVER['REQUEST_METHOD'] === "PATCH") {
         sendResponse(500, array("success" => false, "message" => "Empty or invalid data received"));
     }
 
+
     $tableName = $role;
-    $stmt = $conn->prepare("SELECT * FROM $tableName WHERE id = ? AND created_by = ?");
-    $stmt->bind_param("ii", $id,$admin_id);
+    $sql = "SELECT * FROM $tableName WHERE id = ? ";
+    $stmt;
+    if($role==="employee") {
+        $sql .= " AND created_by = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ii", $id,$admin_id);
+    } else if($role === "admin") {
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $id);
+    }
+
     $stmt->execute();
 
     $result = $stmt->get_result();
